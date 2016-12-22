@@ -1,0 +1,37 @@
+.card {
+    /* Add shadows to create the "card" effect */
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+    border-radius: 10px; /* 5px rounded corners */
+    min-height: 12em;
+}
+
+/* On mouse-over, add a deeper shadow */
+.card:hover {
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+    cursor: pointer;
+}
+
+/* Add some padding inside the card container */
+.card-content {
+    padding: 2px 16px;
+    text-align: center;
+}
+
+.blue-cards .card {
+    background-color: #477586;
+    color: white;
+}
+
+.blue-cards .card.selected {
+    background-color: #659DBA;
+}
+
+.green-cards .card {
+    background-color: #719056;
+    color: white;
+}
+
+.green-cards .card.selected {
+    background-color: #9ECB6B;
+}
