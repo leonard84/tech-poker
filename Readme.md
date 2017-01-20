@@ -45,10 +45,14 @@ Build a Spring Boot App to play planing poker with your team.
    * Use Spock and Geb or MockMvc-Test
 * Ephemeral Poker Sessions (no Database Persistence, simple in memory store)
 * Mobile-first development (responsive)
-  * Chrome supports device "emulation" via reduced screen resolution and touch input 
+  * Chrome supports device "emulation" via reduced screen resolution and touch input
+* No internal components should be used, since this might be deployed to an external cloud. 
 
 
 ## Stretch goals
+
+### Cloud Deployment
+https://docs.spring.io/spring-boot/docs/current/reference/html/cloud-deployment.html
 
 ### Use Websockets
 Use spring-websockets to add updates via Websockets to the app.
@@ -56,19 +60,19 @@ Use spring-websockets to add updates via Websockets to the app.
 * Player vote status is now directly shown via on the master screen
 
 ## Documentation
-- http://docs.spring.io/spring-boot/docs/current/reference/html/
-- https://api.jquery.com/
-- http://www.thymeleaf.org/documentation.html
+- Spring Boot http://docs.spring.io/spring-boot/docs/current/reference/html/
+- Thymeleaf http://www.thymeleaf.org/documentation.html
   - http://www.thymeleaf.org/doc/tutorials/3.0/usingthymeleaf.html
   - http://www.thymeleaf.org/doc/tutorials/3.0/thymeleafspring.html
-- https://getbootstrap.com/css/
-- https://getbootstrap.com/components/
-- http://spockframework.org/spock/docs/1.1-rc-3/index.html
-- http://www.gebish.org/manual/current/
-- Add example maven config for Spock
-- Example Thymeleaf usage in DMID DMDA https://gerrit.demail.dev.server.lan/#/admin/projects/dmid-dmda
-- https://davidshimjs.github.io/qrcodejs/
-- Check Deployment to openshift
+- JQuery https://api.jquery.com/
+- Bootstrap
+  - https://getbootstrap.com/css/
+  - https://getbootstrap.com/components/
+- Spock http://spockframework.org/spock/docs/1.1-rc-3/index.html
+- Geb http://www.gebish.org/manual/current/
+- Example Thymeleaf usage in DMID DMDA: https://gerrit.demail.dev.server.lan/#/admin/projects/dmid-dmda
+- QrCodeJs https://davidshimjs.github.io/qrcodejs/
+
 
 ## Adding spock to maven
 
@@ -108,17 +112,123 @@ so that surefire picks them up.
             <!-- Mandatory dependencies for using Spock -->
             <dependency>
                 <groupId>org.spockframework</groupId>
-                <artifactId>spock-core</artifactId>>
+                <artifactId>spock-core</artifactId>
                 <version>1.1-groovy-2.4-rc-3</version>
                 <scope>test</scope>
             </dependency>
             <dependency>
                 <groupId>org.spockframework</groupId>
-                <artifactId>spock-spring</artifactId>>
+                <artifactId>spock-spring</artifactId>
                 <version>1.1-groovy-2.4-rc-3</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <!-- To enable mocking of classes -->
+                <groupId>cglib</groupId>
+                <artifactId>cglib-nodep</artifactId>
+                <version>3.2.4</version>
                 <scope>test</scope>
             </dependency>
         </dependencies>
     </profile>
 </profiles>
+```
+
+
+## Adding Geb to Maven
+
+Your Geb Tests shoud end in `IT` so that they are executed with failsafe instead of surefire.
+
+```xml
+<profiles>
+    <profile>
+        <id>geb</id>
+        <activation>
+            <file>
+                <exists>src/test/groovy</exists>
+            </file>
+        </activation>
+        <build>
+            <plugins>
+                <!-- Mandatory plugins for using Spock -->
+                <plugin>
+                    <groupId>com.github.webdriverextensions</groupId>
+                    <artifactId>webdriverextensions-maven-plugin</artifactId>
+                    <version>3.1.1</version>
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>install-drivers</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                    <configuration>
+                        <keepDownloadedWebdrivers>true</keepDownloadedWebdrivers>
+
+                        <driver>
+                            <name>chromedriver</name>
+                        </driver>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-failsafe-plugin</artifactId>
+                    <configuration>
+                        <systemPropertyVariables>
+                            <geb.build.reportsDir>target/test-reports/geb</geb.build.reportsDir>
+                        </systemPropertyVariables>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </build>
+        <dependencies>
+            <!-- Mandatory dependencies for using Spock -->
+            <dependency>
+                <groupId>org.gebish</groupId>
+                <artifactId>geb-spock</artifactId>
+                <version>1.1.1</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.gebish</groupId>
+                <artifactId>geb-core</artifactId>
+                <version>1.1.1</version>
+                <scope>test</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.seleniumhq.selenium</groupId>
+                <artifactId>selenium-chrome-driver</artifactId>
+                <version>3.0.1</version>
+                <scope>test</scope>
+            </dependency>
+        </dependencies>
+    </profile>
+</profiles>
+```
+
+Put this in `src/test/resources/GebConfig.groovy`
+
+```groovy
+import org.openqa.selenium.chrome.ChromeDriver
+import org.openqa.selenium.chrome.ChromeDriverService
+import org.openqa.selenium.os.CommandLine
+
+File findDriverExecutable() {
+    def defaultExecutable = CommandLine.find("chromedriver")
+    if (defaultExecutable) {
+        new File(defaultExecutable)
+    } else {
+        new File("drivers").listFiles().find { !it.name.endsWith(".version") }
+    }
+}
+
+driver = {
+    ChromeDriverService.Builder serviceBuilder = new ChromeDriverService.Builder()
+        .usingAnyFreePort()
+        .usingDriverExecutable(findDriverExecutable())
+    new ChromeDriver(serviceBuilder.build())
+}
+
+baseUrl = "http://localhost"
 ```
