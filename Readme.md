@@ -61,7 +61,7 @@ Use spring-websockets to add updates via Websockets to the app.
 
 ## Documentation
 - Spring Boot http://docs.spring.io/spring-boot/docs/current/reference/html/
-- Thymeleaf http://www.thymeleaf.org/documentation.html
+- Thymeleaf http://www.thymeleaf.org/documentation.html (warning spring 1.4.3 uses version 2.1.5 however the documenation is missing)
   - http://www.thymeleaf.org/doc/tutorials/3.0/usingthymeleaf.html
   - http://www.thymeleaf.org/doc/tutorials/3.0/thymeleafspring.html
 - JQuery https://api.jquery.com/
@@ -138,6 +138,7 @@ so that surefire picks them up.
 ## Adding Geb to Maven
 
 Your Geb Tests shoud end in `IT` so that they are executed with failsafe instead of surefire.
+The config uses Chrome, if you can't use it you have to edit it to use another browser.
 
 ```xml
 <profiles>
@@ -157,6 +158,7 @@ Your Geb Tests shoud end in `IT` so that they are executed with failsafe instead
                     <version>3.1.1</version>
                     <executions>
                         <execution>
+                            <phase>pre-integration-test</phase>
                             <goals>
                                 <goal>install-drivers</goal>
                             </goals>
@@ -164,10 +166,13 @@ Your Geb Tests shoud end in `IT` so that they are executed with failsafe instead
                     </executions>
                     <configuration>
                         <keepDownloadedWebdrivers>true</keepDownloadedWebdrivers>
-
-                        <driver>
-                            <name>chromedriver</name>
-                        </driver>
+                       
+                        <drivers>
+                            <driver>
+                                <name>chromedriver</name>
+                                <version>2.27</version>
+                            </driver>
+                        </drivers>
                     </configuration>
                 </plugin>
                 <plugin>
@@ -185,13 +190,13 @@ Your Geb Tests shoud end in `IT` so that they are executed with failsafe instead
             <!-- Mandatory dependencies for using Spock -->
             <dependency>
                 <groupId>org.gebish</groupId>
-                <artifactId>geb-spock</artifactId>
+                <artifactId>geb-core</artifactId>
                 <version>1.1.1</version>
                 <scope>test</scope>
             </dependency>
             <dependency>
                 <groupId>org.gebish</groupId>
-                <artifactId>geb-core</artifactId>
+                <artifactId>geb-spock</artifactId>
                 <version>1.1.1</version>
                 <scope>test</scope>
             </dependency>
@@ -231,4 +236,23 @@ driver = {
 }
 
 baseUrl = "http://localhost"
+```
+
+Minimal example Geb Spec
+
+```groovy
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+class TechPokerAppApplicationIT extends GebReportingSpec {
+
+    @LocalServerPort
+    Integer port
+
+    def 'index loads correctly'() {
+        when:
+        go "http://localhost:$port"
+
+        then:
+        title == 'Tech Poker'
+    }
+}
 ```
