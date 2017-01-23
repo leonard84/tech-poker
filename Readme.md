@@ -16,7 +16,7 @@ Build a Spring Boot App to play planing poker with your team.
 ### Create your Spring Boot App with the Spring Initialzr
 * Either go to https://start.spring.io or use IntelliJ new Spring Boot Project
 * Generate a **Maven Project** and set your groupId to 'org.oneandone.tech.poker.\<teamname>' artifactId 'tech-poker-app'
-* Select the following dependencies: Web, Thymeleaf, Actuator, Configuration Processor
+* Select the following dependencies: Web, Thymeleaf, Actuator, Configuration Processor, Jersey (JAX-RS), DevTools
 * Download and unzip the Project/Finish the IntelliJ wizard
 
 ### Import the Project into IntelliJ
@@ -46,8 +46,11 @@ Build a Spring Boot App to play planing poker with your team.
 * Ephemeral Poker Sessions (no Database Persistence, simple in memory store)
 * Mobile-first development (responsive)
   * Chrome supports device "emulation" via reduced screen resolution and touch input
-* No internal components should be used, since this might be deployed to an external cloud. 
-
+* No internal components should be used, since this might be deployed to an external cloud.
+ 
+## Options
+* Use Thymeleaf/Spring MVC for all interactions
+* Use Ajax/REST (JQuery/Jersey) together with Thymeleaf/MVC for more interactivity
 
 ## Stretch goals
 
@@ -60,7 +63,10 @@ Use spring-websockets to add updates via Websockets to the app.
 * Player vote status is now directly shown via on the master screen
 
 ## Documentation
-- Spring Boot http://docs.spring.io/spring-boot/docs/current/reference/html/
+- Spring 
+  - Boot https://docs.spring.io/spring-boot/docs/current/reference/html/
+  - MVC https://docs.spring.io/spring/docs/current/spring-framework-reference/html/mvc.html#mvc-ann-requestmapping
+  - MVC Testing https://docs.spring.io/spring/docs/current/spring-framework-reference/html/integration-testing.html#spring-mvc-test-framework 
 - Thymeleaf http://www.thymeleaf.org/documentation.html (warning spring 1.4.3 uses version 2.1.5 however the documenation is missing)
   - http://www.thymeleaf.org/doc/tutorials/3.0/usingthymeleaf.html
   - http://www.thymeleaf.org/doc/tutorials/3.0/thymeleafspring.html
@@ -68,7 +74,7 @@ Use spring-websockets to add updates via Websockets to the app.
 - Bootstrap
   - https://getbootstrap.com/css/
   - https://getbootstrap.com/components/
-- Spock http://spockframework.org/spock/docs/1.1-rc-3/index.html
+- Spock http://spockframework.org/spock/docs/1.1-rc-3/all_in_one.html
 - Geb http://www.gebish.org/manual/current/
 - Example Thymeleaf usage in DMID DMDA: https://gerrit.demail.dev.server.lan/#/admin/projects/dmid-dmda
 - QrCodeJs https://davidshimjs.github.io/qrcodejs/
@@ -238,7 +244,10 @@ driver = {
 baseUrl = "http://localhost"
 ```
 
-Minimal example Geb Spec
+
+## Examples
+
+Minimal example Geb Spec in `src/test/groovy`
 
 ```groovy
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -253,6 +262,19 @@ class TechPokerAppApplicationIT extends GebReportingSpec {
 
         then:
         title == 'Tech Poker'
+    }
+}
+```
+
+Simple MVC Controller
+```java
+@Controller
+public class IndexController {
+
+    @RequestMapping(path="/", method=RequestMethod.GET)
+    public ModelAndView(ModelAndView modelAndView) {
+        modelAndView.setViewName("index");
+        return modelAndView;
     }
 }
 ```
