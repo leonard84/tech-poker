@@ -4,9 +4,12 @@ $(function () {
 
     $('.card').click(
         function () {
-            console.log("Selected Card Value: " + $(this).data('card'));
+            var cardValue = $(this).data('card');
+            console.log("Selected Card Value: " + cardValue);
             $('.card').removeClass('selected');
             $(this).addClass('selected');
+            $('input[name=vote]').val(cardValue);
+            $('#voteForm').submit()
         }
     );
 

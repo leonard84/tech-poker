@@ -20,8 +20,11 @@ import spock.lang.Specification
 @SpringBootTest
 class PokerControllerTest extends Specification {
 
-    @Inject MockMvc mockMvc
-    @Inject GameService gameService
+    @Inject
+    MockMvc mockMvc
+
+    @Inject
+    GameService gameService
 
     def "renders index"() {
         expect:
@@ -48,7 +51,7 @@ class PokerControllerTest extends Specification {
         def gameId = gameService.createNewGame()
 
         expect:
-        mockMvc.perform(get("/join/$gameId")).andExpect(view().name('join'))
+        mockMvc.perform(get("/join").param('gameId', gameId.toString())).andExpect(view().name('join'))
     }
 
     def "join accepts a name"() {

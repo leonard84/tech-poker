@@ -1,10 +1,16 @@
 package org.oneandone.tech.poker.leo;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
 import javax.inject.Inject;
 import javax.ws.rs.FormParam;
 
 import org.oneandone.tech.poker.leo.config.PokerConfig;
 import org.oneandone.tech.poker.leo.exceptions.GameNotFoundException;
+import org.oneandone.tech.poker.leo.services.Choice;
 import org.oneandone.tech.poker.leo.services.GameId;
 import org.oneandone.tech.poker.leo.services.GameService;
 import org.oneandone.tech.poker.leo.services.GameSession;
@@ -20,6 +26,8 @@ import org.springframework.web.servlet.view.RedirectView;
 
 @Controller
 public class PokerController {
+
+    private static final List<String> CARDS = Arrays.stream(Choice.values()).map(Enum::name).collect(Collectors.toList());
 
     @Inject
     private PokerConfig pokerConfig;
@@ -61,6 +69,30 @@ public class PokerController {
         GameSession game = getGame(gameId);
         PlayerId playerId = game.join(playerName);
         return new RedirectView("/vote/"+gameId+"/"+playerId);
+    }
+
+    @RequestMapping(path = "/vote/{gameId}/{playerId}", method = RequestMethod.POST)
+    public View vote(@PathVariable("gameId") String gameId, @PathVariable("playerId") String playerId,
+            @FormParam("vote") String vote) {
+        GameSession game = getGame(gameId);
+        PlayerId playerId1 = new PlayerId(playerId);
+        game.vote(playerId1, Choice.valueOf(vote.toUpperCase()));
+        return new RedirectView("/vote/"+gameId+"/"+playerId);
+    }
+
+    @RequestMapping(path = "/vote/{gameId}/{playerId}", method = RequestMethod.GET)
+    public ModelAndView selection(@PathVariable("gameId") String gameId, @PathVariable("playerId") String playerId,
+            ModelAndView modelAndView) {
+        GameSession game = getGame(gameId);
+        PlayerId playerId1 = new PlayerId(playerId);
+        Choice vote = game.getVote(playerId1);
+        String playerName = game.getName(playerId1);
+        modelAndView.addObject("gameId", game.getId());
+        modelAndView.addObject("cards", CARDS);
+        modelAndView.addObject("playerName", playerName);
+        modelAndView.addObject("vote", Optional.ofNullable(vote).map(Enum::name).orElse(""));
+        modelAndView.setViewName("vote");
+        return modelAndView;
     }
 
     private GameSession getGame(String gameId) {

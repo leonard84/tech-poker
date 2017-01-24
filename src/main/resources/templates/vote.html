@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8"/>
+    <meta http-equiv="refresh" content="5"/>
     <title>Tech Poker</title>
     <script language="JavaScript" src="../static/js/jquery-3.1.1.min.js" data-th-src="@{/js/jquery-3.1.1.min.js}"></script>
     <script language="JavaScript" src="../static/js/bootstrap.min.js" data-th-src="@{/js/bootstrap.min.js}"></script>
@@ -10,62 +11,19 @@
     <link rel="stylesheet" href="../static/css/techpoker.css" data-th-href="@{/css/techpoker.css}"/>
 </head>
 <body>
-<div class="container blue-cards">
-    <div class="col-xs-4">
-        <div class="card" data-card="1">
-            <h1 class="card-content">1</h1>
-        </div>
-    </div>
-    <div class="col-xs-4">
-        <div class="card" data-card="2">
-            <h1 class="card-content">2</h1>
-        </div>
-    </div>
-    <div class="col-xs-4">
-        <div class="card" data-card="3">
-            <h1 class="card-content">3</h1>
-        </div>
-    </div>
-    <div class="col-xs-4">
-        <div class="card" data-card="5">
-            <h1 class="card-content">5</h1>
-        </div>
-    </div>
-    <div class="col-xs-4">
-        <div class="card" data-card="8">
-            <h1 class="card-content">8</h1>
-        </div>
-    </div>
-    <div class="col-xs-4">
-        <div class="card" data-card="13">
-            <h1 class="card-content">13</h1>
-        </div>
-    </div>
-    <div class="col-xs-4">
-        <div class="card" data-card="20">
-            <h1 class="card-content">20</h1>
-        </div>
-    </div>
-    <div class="col-xs-4">
-        <div class="card" data-card="40">
-            <h1 class="card-content">40</h1>
-        </div>
-    </div>
-    <div class="col-xs-4">
-        <div class="card" data-card="100">
-            <h1 class="card-content">100</h1>
-        </div>
-    </div>
-    <div class="col-xs-4">
-        <div class="card" data-card="?">
-            <h1 class="card-content">?</h1>
-        </div>
-    </div>
+<div class="container">
+    <h2>Hello <span data-th-text="${playerName}" data-th-remove="tag"></span> </h2>
+    <div class="blue-cards">
+        <form id="voteForm" method="post">
+            <input type="hidden" name="vote" value="" data-th-value="${vote}"/>
 
-    <div class="col-xs-4">
-        <div class="card" data-card="coffee">
-            <h1 class="card-content">&#x2615;</h1>
-        </div>
+            <div class="col-xs-4" data-th-each="card : ${cards}">
+                <div class="card" data-card="1" data-th-attr="data-card=${card}"
+                     data-th-classappend="${vote == card} ? 'selected' : ''">
+                    <h1 class="card-content" data-th-text="${ #messages.msg('card.values.' + card) }"></h1>
+                </div>
+            </div>
+        </form>
     </div>
 </div>
 </body>

@@ -1,5 +1,7 @@
 spring:
   application:
     name: Tech Poker
+  messages:
+      basename: messages
 poker:
   external-url: http://localhost

@@ -22,7 +22,8 @@ Build a Spring Boot App to play planing poker with your team.
 ### Import the Project into IntelliJ
 * Copy the resources from this checkout into the _src/main/resources/static_ folder 
   and move the _templates_ one level up (_src/main/resources/templates_)
-* Delete the application.properties in _src/main/resources_ and create an application.yml
+* Delete the application.properties in _src/main/resources_ and create an application.yml and set 
+  `spring.application.name=Tech Poker`
 
 
 ## Poker

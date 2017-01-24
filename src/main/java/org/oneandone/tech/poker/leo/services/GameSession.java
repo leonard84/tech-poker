@@ -42,20 +42,12 @@ public class GameSession {
         votes.put(playerId, vote);
     }
 
-    public GameId getId() {
-        return id;
-    }
-
     public Result tally() {
         updated();
         return new Result(
             resultStream().average().orElse(0.0),
             resultStream().min().orElse(0),
             resultStream().max().orElse(0));
-    }
-
-    private IntStream resultStream() {
-        return votes.values().stream().filter(Choice::hasValue).mapToInt(Choice::getValue);
     }
 
     public GameStats getStats() {
@@ -69,10 +61,31 @@ public class GameSession {
 
     public Choice getVote(PlayerId playerId) {
         Assert.notNull(playerId, "playerId may not be null");
+        Assert.isTrue(players.containsKey(playerId), "player is unknown");
         return votes.get(playerId);
+    }
+
+    public GameId getId() {
+        return id;
+    }
+
+    public Instant getCreationTime() {
+        return creationTime;
+    }
+
+    public Instant getLastUpdate() {
+        return lastUpdate;
+    }
+
+    private IntStream resultStream() {
+        return votes.values().stream().filter(Choice::hasValue).mapToInt(Choice::getValue);
     }
 
     private void updated() {
         lastUpdate = Instant.now();
+    }
+
+    public String getName(PlayerId playerId) {
+        return players.get(playerId);
     }
 }

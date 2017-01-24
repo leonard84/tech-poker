@@ -125,4 +125,13 @@ class GameSessionTest extends Specification {
         expect:
         gameSession.getVote(player1) == Choice.V13
     }
+
+
+    def "a players name can be queried"() {
+        given:
+        def player1 = gameSession.join('player1')
+
+        expect:
+        gameSession.getName(player1) == 'player1'
+    }
 }
