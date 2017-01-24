@@ -116,4 +116,13 @@ class GameSessionTest extends Specification {
             max == 5
         }
     }
+
+    def "a players vote can be queried"() {
+        given:
+        def player1 = gameSession.join('player1')
+        gameSession.vote(player1, Choice.V13)
+
+        expect:
+        gameSession.getVote(player1) == Choice.V13
+    }
 }
