@@ -17,16 +17,20 @@
     </div>
 
     <div class="col-xs-6">
-        <button class="btn btn-primary">Start a new Planning Session</button>
+        <form data-th-action="@{/new}" method="post">
+            <input type="submit" class="btn btn-primary">Start a new Planning Session</input>
+        </form>
     </div>
 
     <div class="col-xs-6">
-        <div class="input-group">
-            <input type="text" class="form-control" placeholder="Session Id"/>
-            <span class="input-group-btn">
-                <button class="btn btn-success" type="button">Join</button>
+        <form data-th-action="@{/join}" method="get">
+            <div class="input-group">
+                <input type="text" name="gameId" class="form-control" placeholder="Session Id"/>
+                <span class="input-group-btn">
+                <input type="submit" class="btn btn-success">Join</input>
             </span>
-        </div>
+            </div>
+        </form>
     </div>
 </div>
 </body>
