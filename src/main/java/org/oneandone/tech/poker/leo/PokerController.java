@@ -3,6 +3,7 @@ package org.oneandone.tech.poker.leo;
 import java.util.UUID;
 
 import javax.inject.Inject;
+import javax.ws.rs.FormParam;
 
 import org.oneandone.tech.poker.leo.config.PokerConfig;
 import org.springframework.stereotype.Controller;
@@ -36,5 +37,18 @@ public class PokerController {
         modelAndView.addObject("externalUrl", pokerConfig.getExternalUrl());
         modelAndView.setViewName("poker");
         return modelAndView;
+    }
+
+    @RequestMapping(path = "/join/{gameId}", method = RequestMethod.GET)
+    public ModelAndView requestJoinGame(@PathVariable("gameId") String gameId,ModelAndView modelAndView) {
+        modelAndView.addObject("gameId", gameId);
+        modelAndView.setViewName("join");
+        return modelAndView;
+    }
+
+    @RequestMapping(path = "/join/{gameId}", method = RequestMethod.POST)
+    public View joinGame(@PathVariable("gameId") String gameId, @FormParam("playerName") String playerName) {
+        String playerId = UUID.randomUUID().toString();
+        return new RedirectView("/vote/"+gameId+"/"+playerId);
     }
 }

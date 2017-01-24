@@ -38,4 +38,14 @@ class PokerControllerTest extends Specification {
                 .andExpect(view().name('poker'))
                 .andExpect(content().string(containsString('data-qr-url="http://localhost/game/sessionId"')))
     }
+
+    def "join asks for a name"() {
+        expect:
+        mockMvc.perform(get('/join/sessionId')).andExpect(view().name('join'))
+    }
+
+    def "join accepts a name"() {
+        expect:
+        mockMvc.perform(post('/join/sessionId')).andExpect(redirectedUrlPattern('/vote/*/*'))
+    }
 }
