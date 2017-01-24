@@ -1,0 +1,5 @@
+spring:
+  application:
+    name: Tech Poker
+poker:
+  external-url: http://localhost
