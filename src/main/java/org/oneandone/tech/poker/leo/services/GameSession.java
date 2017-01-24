@@ -28,7 +28,7 @@ public class GameSession {
     }
 
     public PlayerId join(String playerName) {
-        Assert.notNull(id, "playerName may not be null");
+        Assert.notNull(playerName, "playerName may not be null");
         updated();
         PlayerId playerId = new PlayerId();
         players.put(playerId, playerName);
