@@ -2,7 +2,6 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8"/>
-    <meta http-equiv="refresh" content="5"/>
     <title>Tech Poker</title>
     <script language="JavaScript" src="../static/js/jquery-3.1.1.min.js" data-th-src="@{/js/jquery-3.1.1.min.js}"></script>
     <script language="JavaScript" src="../static/js/bootstrap.min.js" data-th-src="@{/js/bootstrap.min.js}"></script>
@@ -13,24 +12,24 @@
 </head>
 <body>
 <div class="container">
-    <div class="col-md-2 pull-right">
-        <div id="joinQr" data-qr-url="http://localhost/session/3847599023409"
-             data-th-attr="data-qr-url=${externalUrl}+@{/game/__${gameId}__}"></div>
-    </div>
+
     <div class="col-md-10">
         <div class="panel panel-default">
-            <div class="panel-heading"><span data-th-text="${stats.currentVotes}"></span>/<span
-                    data-th-text="${stats.players.size()}"></span></div>
+            <div class="panel-heading">
+                Min: <span data-th-text="${result.min}"></span> Average: <span data-th-text="${result.average}"></span> Max: <span data-th-text="${result.max}"></span>
+            </div>
             <div class="panel-body">
                 <ul>
-                    <li data-th-each="player : ${stats.players}" data-th-text="${player}"></li>
+                    <li data-th-each="entry : ${result.votes.entrySet()}">
+                        <span data-th-text="${ #messages.msg('card.values.' + entry.key) }"></span>:<span data-th-text="${entry.value}"></span>
+                    </li>
                 </ul>
             </div>
         </div>
     </div>
     <div class="col-md-12">
-        <form data-th-action="@{/result/__${gameId}__}" method="post">
-            <input type="submit" value="Finish Vote" class="btn btn-primary"/>
+        <form data-th-action="@{/reset/__${gameId}__}" method="post">
+            <input type="submit" value="Reset" class="btn btn-primary"/>
         </form>
     </div>
 </div>

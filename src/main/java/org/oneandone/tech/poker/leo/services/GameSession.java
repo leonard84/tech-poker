@@ -1,8 +1,12 @@
 package org.oneandone.tech.poker.leo.services;
 
+import static java.util.function.Function.identity;
+
 import java.time.Instant;
+import java.util.Arrays;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import org.springframework.util.Assert;
@@ -44,10 +48,17 @@ public class GameSession {
 
     public Result tally() {
         updated();
+
+        Map<Choice, Integer> grouped = votes.values().stream().collect(
+                Collectors.groupingBy(identity(), Collectors.summingInt(i -> 1)));
+
+        Arrays.stream(Choice.values()).forEach(c -> grouped.putIfAbsent(c, 0));
+
         return new Result(
-            resultStream().average().orElse(0.0),
-            resultStream().min().orElse(0),
-            resultStream().max().orElse(0));
+                resultStream().average().orElse(0.0),
+                resultStream().min().orElse(0),
+                resultStream().max().orElse(0),
+                grouped);
     }
 
     public GameStats getStats() {

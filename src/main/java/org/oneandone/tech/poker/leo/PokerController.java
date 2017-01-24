@@ -52,8 +52,24 @@ public class PokerController {
         GameSession game = getGame(gameId);
         modelAndView.addObject("gameId", game.getId());
         modelAndView.addObject("externalUrl", pokerConfig.getExternalUrl());
+        modelAndView.addObject("stats", game.getStats());
         modelAndView.setViewName("poker");
         return modelAndView;
+    }
+
+    @RequestMapping(path = "/result/{gameId}", method = RequestMethod.POST)
+    public ModelAndView result(@PathVariable("gameId") String gameId, ModelAndView modelAndView) {
+        GameSession game = getGame(gameId);
+        modelAndView.addObject("result", game.tally());
+        modelAndView.setViewName("result");
+        return modelAndView;
+    }
+
+    @RequestMapping(path = "/reset/{gameId}", method = RequestMethod.POST)
+    public View reset(@PathVariable("gameId") String gameId) {
+        GameSession game = getGame(gameId);
+        game.reset();
+        return new RedirectView("/game/"+gameId);
     }
 
     @RequestMapping(path = "/join", method = RequestMethod.GET)
