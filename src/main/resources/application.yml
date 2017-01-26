@@ -13,5 +13,10 @@ poker:
 ---
 spring:
   profiles: openshift
+server:
+  port: ${env.OPENSHIFT_DIY_PORT}
+  address: ${env.OPENSHIFT_DIY_IP}
 poker:
-  external-url: https://poker-demail.rhcloud.com
+  external-url: https://${env.OPENSHIFT_GEAR_DNS}
+logging:
+  path: ${env.OPENSHIFT_DIY_LOG_DIR}
