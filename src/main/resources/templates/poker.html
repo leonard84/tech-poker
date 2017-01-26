@@ -19,9 +19,17 @@
     </div>
     <div class="col-md-10">
         <div class="panel panel-default">
-            <div class="panel-heading"><span data-th-text="${stats.currentVotes}"></span>/<span
-                    data-th-text="${stats.playerVotes.size()}"></span></div>
+            <div class="panel-heading">
+               Vote in Progress
+            </div>
             <div class="panel-body">
+                <div class="progress">
+                    <div class="progress-bar" role="progressbar"
+                         style="width: 60%;" data-th-style="${'width: '+((stats.currentVotes*100)/stats.playerVotes.size())+'%'}">
+                        <span data-th-text="${stats.currentVotes}"></span>/<span
+                            data-th-text="${stats.playerVotes.size()}"></span>
+                    </div>
+                </div>
                 <ul class="list-group">
                     <li class="list-group-item" data-th-each="playerVote : ${stats.playerVotes}"
                         data-th-text="${playerVote.playerName}"
