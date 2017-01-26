@@ -11,6 +11,8 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import javax.inject.Inject;
+
 import org.oneandone.tech.poker.leo.data.Choice;
 import org.oneandone.tech.poker.leo.data.ChoiceResult;
 import org.oneandone.tech.poker.leo.data.GameId;
@@ -18,9 +20,14 @@ import org.oneandone.tech.poker.leo.data.GameStats;
 import org.oneandone.tech.poker.leo.data.PlayerId;
 import org.oneandone.tech.poker.leo.data.PlayerVote;
 import org.oneandone.tech.poker.leo.data.Result;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.util.Assert;
 
 public class GameSession {
+
+    @Inject
+    private SimpMessagingTemplate simpMessagingTemplate;
+
     private final GameId id;
 
     private final Instant creationTime = Instant.now();
@@ -45,6 +52,7 @@ public class GameSession {
         updated();
         PlayerId playerId = new PlayerId();
         players.put(playerId, playerName);
+        sendStats();
         return playerId;
     }
 
@@ -53,6 +61,11 @@ public class GameSession {
         Assert.notNull(vote, "vote may not be null");
         updated();
         votes.put(playerId, vote);
+        sendStats();
+    }
+
+    public void sendStats() {
+        simpMessagingTemplate.convertAndSend("/topic/session/" + id + "/stats", getStats());
     }
 
     public Result tally() {
@@ -66,16 +79,18 @@ public class GameSession {
                         grouped.getOrDefault(choice, 0),
                         votes.entrySet().stream()
                                 .filter(e -> e.getValue() == choice)
-                                .map(e->players.get(e.getKey()))
+                                .map(e -> players.get(e.getKey()))
                                 .sorted()
                                 .collect(Collectors.toList())))
                 .collect(Collectors.toList());
 
-        return new Result(
+        Result result = new Result(
                 resultStream().average().orElse(0.0),
                 resultStream().min().orElse(0),
                 resultStream().max().orElse(0),
                 results);
+        simpMessagingTemplate.convertAndSend("/topic/session/" + id + "/result", result);
+        return result;
     }
 
     public GameStats getStats() {
@@ -88,6 +103,7 @@ public class GameSession {
     public void reset() {
         updated();
         votes.clear();
+        simpMessagingTemplate.convertAndSend("/topic/session/" + id + "/reset", "reset");
     }
 
     public Choice getVote(PlayerId playerId) {

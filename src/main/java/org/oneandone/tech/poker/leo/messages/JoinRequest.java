@@ -4,6 +4,9 @@ public class JoinRequest {
     private String sessionId;
     private String playerName;
 
+    public JoinRequest() {
+    }
+
     public JoinRequest(String sessionId, String playerName) {
         this.sessionId = sessionId;
         this.playerName = playerName;

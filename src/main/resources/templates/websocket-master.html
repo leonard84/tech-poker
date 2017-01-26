@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Tech Poker</title>
+    <script language="JavaScript" src="../static/js/jquery-3.1.1.min.js" data-th-src="@{/js/jquery-3.1.1.min.js}"></script>
+    <script language="JavaScript" src="../static/js/bootstrap.min.js" data-th-src="@{/js/bootstrap.min.js}"></script>
+    <script language="JavaScript" src="../static/js/qrcode.min.js" data-th-src="@{/js/qrcode.min.js}"></script>
+    <script language="JavaScript" src="../static/js/handlebars-v4.0.5.js" data-th-src="@{/js/handlebars-v4.0.5.js}"></script>
+    <script language="JavaScript" data-th-src="@{/webjars/sockjs-client/sockjs.min.js}"></script>
+    <script language="JavaScript" data-th-src="@{/webjars/stomp-websocket/stomp.min.js}"></script>
+    <script language="JavaScript" src="../static/js/techpoker.js" data-th-src="@{/js/techpoker.js}"></script>
+    <script language="JavaScript" src="../static/js/techsocket-master.js" data-th-src="@{/js/techsocket-master.js}"></script>
+    <link rel="stylesheet" href="../static/css/bootstrap.min.css" data-th-href="@{/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" href="../static/css/techpoker.css" data-th-href="@{/css/techpoker.css}"/>
+</head>
+<body data-th-attr="data-game-id=${gameId}">
+<div class="container" id="content">
+
+</div>
+<script id="game-template" type="text/x-handlebars-template">
+    <div class="col-xs-12">
+        <h1>Planning Poker</h1>
+
+    </div>
+    <div class="col-md-2 pull-right">
+        <div id="joinQr" data-qr-url="http://localhost/session/3847599023409"
+             data-th-attr="data-qr-url=${externalUrl}+@{/game/__${gameId}__}"></div>
+    </div>
+    <div class="col-md-10">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                Vote in Progress
+            </div>
+            <div class="panel-body">
+                <div class="progress">
+                    <div class="progress-bar" role="progressbar"
+                         style="width: {{votePercent}}%;">
+                        {{currentVotes}}/{{totalVotes}}
+                    </div>
+                </div>
+                <ul class="list-group">
+                    {{#each playerVotes}}
+                    <li class="list-group-item {{#if voted}}list-group-item-success{{/if}}">{{playerName}}</li>
+                    {{/each}}
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <button class="btn btn-primary" id="finish">Finish Vote</button>
+    </div>
+</script>
+<script id="result-template" type="text/x-handlebars-template">
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                Min: {{min}}
+                Average:{{average}}
+                Max:{{max}}
+            </div>
+            <div class="panel-body">
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th width="10%" class="text-center">Card</th>
+                            <th width="10%" class="text-center">Count</th>
+                            <th width="80%">Players</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {{#each votes}}
+                            <tr class="result-list">
+                                <td class="result-key text-right">{{choice}}</td>
+                                <td class="result-value text-right">{{count}}</td>
+                                <td>{{players}}</td>
+                            </tr>
+                        {{/each}}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div id="histogram"></div>
+    </div>
+    <div class="col-md-12">
+        <button class="btn btn-primary" id="reset">Reset Vote</button>
+    </div>
+</script>
+</body>
+</html>

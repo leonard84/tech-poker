@@ -3,5 +3,17 @@ spring:
     name: Tech Poker
   messages:
       basename: messages
+---
+spring:
+  profiles: default
+server:
+  port: 8080
 poker:
-  external-url: http://localhost
+  external-url: http://localhost:${server.port}
+---
+spring:
+  profiles: openshift
+server:
+  port: ${env.OPENSHIFT_PORT}
+poker:
+  external-url: http://poker-demail.rhcloud.com:${server.port}

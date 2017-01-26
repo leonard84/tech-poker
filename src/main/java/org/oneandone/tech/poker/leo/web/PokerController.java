@@ -35,9 +35,18 @@ public class PokerController {
     @Inject
     private GameService gameService;
 
-    @RequestMapping(path = "/test/{sessionId}", method = RequestMethod.GET)
-    public String test(@PathVariable String sessionId) {
-        return "websocket";
+    @RequestMapping(path = "/wp", method = RequestMethod.GET)
+    public String websocketPlayer() {
+        return "websocket-player";
+    }
+
+
+    @RequestMapping(path = "/wm/{gameId}", method = RequestMethod.GET)
+    public ModelAndView websocketMaster(@PathVariable("gameId") String gameId, ModelAndView modelAndView) {
+        GameSession game = getGame(gameId);
+        modelAndView.addObject("gameId", game.getId());
+        modelAndView.setViewName("websocket-master");
+        return modelAndView;
     }
 
     @RequestMapping(path = "/", method = RequestMethod.GET)
@@ -50,6 +59,12 @@ public class PokerController {
     public View newGame() {
         GameId gameId = gameService.createNewGame();
         return new RedirectView("/game/"+gameId);
+    }
+
+    @RequestMapping(path = "/new/ws", method = RequestMethod.POST)
+    public View newGameWs() {
+        GameId gameId = gameService.createNewGame();
+        return new RedirectView("/wm/"+gameId);
     }
 
     @RequestMapping(path = "/game/{gameId}", method = RequestMethod.GET)

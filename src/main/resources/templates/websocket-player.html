@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Tech Poker</title>
+    <script language="JavaScript" src="../static/js/jquery-3.1.1.min.js" data-th-src="@{/js/jquery-3.1.1.min.js}"></script>
+    <script language="JavaScript" src="../static/js/bootstrap.min.js" data-th-src="@{/js/bootstrap.min.js}"></script>
+    <script language="JavaScript" src="../static/js/handlebars-v4.0.5.js" data-th-src="@{/js/handlebars-v4.0.5.js}"></script>
+    <script language="JavaScript" data-th-src="@{/webjars/sockjs-client/sockjs.min.js}"></script>
+    <script language="JavaScript" data-th-src="@{/webjars/stomp-websocket/stomp.min.js}"></script>
+    <script language="JavaScript" src="../static/js/techsocket-player.js" data-th-src="@{/js/techsocket-player.js}"></script>
+    <link rel="stylesheet" href="../static/css/bootstrap.min.css" data-th-href="@{/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" href="../static/css/techpoker.css" data-th-href="@{/css/techpoker.css}"/>
+</head>
+<body>
+<div class="container" id="container">
+    <div class="col-xs-12">
+        <h1>Planning Poker</h1>
+
+    </div>
+    <div class="col-xs-6">
+        <div class="form-group">
+            <label for="sessionId">Session Id</label>
+            <input type="text" id="sessionId" name="sessionId" class="form-control" placeholder="Session"/>
+        </div>
+        <div class="form-group">
+            <label for="playerName">Player Name</label>
+            <input type="text" id="playerName" name="playerName" class="form-control" placeholder="Nickname"/>
+        </div>
+
+        <div class="form-group">
+            <button class="btn btn-success" id="join" type="submit">Join</button>
+        </div>
+    </div>
+</div>
+<script id="vote-template" type="text/x-handlebars-template">
+    <h2>Hello {{playerName}} </h2>
+    <div class="blue-cards">
+        {{#each cards}}
+        <div class="col-xs-4">
+            <div class="card" data-card="{{key}}">
+                <h1 class="card-content">{{displayName}}</h1>
+            </div>
+        </div>
+        {{/each}}
+    </div>
+</script>
+</body>
+</html>
