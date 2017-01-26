@@ -1,4 +1,4 @@
-package org.oneandone.tech.poker.leo;
+package org.oneandone.tech.poker.leo.web;
 
 import java.util.Arrays;
 import java.util.List;
@@ -34,6 +34,11 @@ public class PokerController {
 
     @Inject
     private GameService gameService;
+
+    @RequestMapping(path = "/test", method = RequestMethod.GET)
+    public String test() {
+        return "websocket";
+    }
 
     @RequestMapping(path = "/", method = RequestMethod.GET)
     public ModelAndView index(ModelAndView modelAndView) {
