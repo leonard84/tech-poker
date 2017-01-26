@@ -7,6 +7,8 @@
     <script language="JavaScript" src="../static/js/bootstrap.min.js" data-th-src="@{/js/bootstrap.min.js}"></script>
     <script language="JavaScript" src="../static/js/qrcode.min.js" data-th-src="@{/js/qrcode.min.js}"></script>
     <script language="JavaScript" src="../static/js/handlebars-v4.0.5.js" data-th-src="@{/js/handlebars-v4.0.5.js}"></script>
+    <script language="JavaScript" src="../static/js/raphael.min.js" data-th-src="@{/js/raphael.min.js}"></script>
+    <script language="JavaScript" src="../static/js/morris.min.js" data-th-src="@{/js/morris.min.js}"></script>
     <script language="JavaScript" data-th-src="@{/webjars/sockjs-client/sockjs.min.js}"></script>
     <script language="JavaScript" data-th-src="@{/webjars/stomp-websocket/stomp.min.js}"></script>
     <script language="JavaScript" src="../static/js/techpoker.js" data-th-src="@{/js/techpoker.js}"></script>
@@ -22,10 +24,6 @@
     <div class="col-xs-12">
         <h1>Planning Poker</h1>
 
-    </div>
-    <div class="col-md-2 pull-right">
-        <div id="joinQr" data-qr-url="http://localhost/session/3847599023409"
-             data-th-attr="data-qr-url=${externalUrl}+@{/game/__${gameId}__}"></div>
     </div>
     <div class="col-md-10">
         <div class="panel panel-default">
@@ -46,6 +44,10 @@
                 </ul>
             </div>
         </div>
+    </div>
+    <div class="col-md-2">
+        <div id="joinQr" data-qr-url="http://localhost/session/3847599023409"
+             data-th-attr="data-qr-url=${externalUrl}+@{/game/__${gameId}__}"></div>
     </div>
     <div class="col-md-12">
         <button class="btn btn-primary" id="finish">Finish Vote</button>

@@ -34,12 +34,13 @@ function loadCards() {
 }
 
 function init() {
+    $('#sessionId').val(window.location.hash.substring(1));
     var voteSource = $("#vote-template").html();
     voteTemplate = Handlebars.compile(voteSource);
 }
 
 function render() {
-    var context = {cards: cards, playerName: ''};
+    var context = {cards: cards, playerName: playerName};
     $('#container').html(voteTemplate(context));
     $('.card').click(
         function () {

@@ -13,10 +13,6 @@
 </head>
 <body>
 <div class="container">
-    <div class="col-md-2 pull-right">
-        <div id="joinQr" data-qr-url="http://localhost/session/3847599023409"
-             data-th-attr="data-qr-url=${externalUrl}+@{/game/__${gameId}__}"></div>
-    </div>
     <div class="col-md-10">
         <div class="panel panel-default">
             <div class="panel-heading">
@@ -37,6 +33,10 @@
                 </ul>
             </div>
         </div>
+    </div>
+    <div class="col-md-2">
+        <div id="joinQr" data-qr-url="http://localhost/session/3847599023409"
+             data-th-attr="data-qr-url=${externalUrl}+@{/game/__${gameId}__}"></div>
     </div>
     <div class="col-md-12">
         <form data-th-action="@{/result/__${gameId}__}" method="post">
