@@ -4,11 +4,18 @@ import static java.util.function.Function.identity;
 
 import java.time.Instant;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import org.oneandone.tech.poker.leo.data.Choice;
+import org.oneandone.tech.poker.leo.data.GameId;
+import org.oneandone.tech.poker.leo.data.GameStats;
+import org.oneandone.tech.poker.leo.data.PlayerId;
+import org.oneandone.tech.poker.leo.data.PlayerVote;
+import org.oneandone.tech.poker.leo.data.Result;
 import org.springframework.util.Assert;
 
 public class GameSession {
@@ -62,7 +69,10 @@ public class GameSession {
     }
 
     public GameStats getStats() {
-        return new GameStats(players.values(), votes.size());
+        Collection<PlayerVote> values = players.entrySet().stream()
+                .map(player -> new PlayerVote(player.getValue(), votes.containsKey(player.getKey())))
+                .collect(Collectors.toList());
+        return new GameStats(values, votes.size());
     }
 
     public void reset() {

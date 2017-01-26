@@ -10,11 +10,11 @@ import javax.ws.rs.FormParam;
 
 import org.oneandone.tech.poker.leo.config.PokerConfig;
 import org.oneandone.tech.poker.leo.exceptions.GameNotFoundException;
-import org.oneandone.tech.poker.leo.services.Choice;
-import org.oneandone.tech.poker.leo.services.GameId;
+import org.oneandone.tech.poker.leo.data.Choice;
+import org.oneandone.tech.poker.leo.data.GameId;
 import org.oneandone.tech.poker.leo.services.GameService;
 import org.oneandone.tech.poker.leo.services.GameSession;
-import org.oneandone.tech.poker.leo.services.PlayerId;
+import org.oneandone.tech.poker.leo.data.PlayerId;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;

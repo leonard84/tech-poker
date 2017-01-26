@@ -1,4 +1,4 @@
-package org.oneandone.tech.poker.leo.services;
+package org.oneandone.tech.poker.leo.data;
 
 import java.util.EnumMap;
 import java.util.Map;

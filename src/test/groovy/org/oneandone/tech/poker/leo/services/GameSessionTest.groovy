@@ -1,5 +1,10 @@
 package org.oneandone.tech.poker.leo.services
 
+import org.oneandone.tech.poker.leo.data.Choice
+import org.oneandone.tech.poker.leo.data.GameId
+import org.oneandone.tech.poker.leo.data.GameStats
+import org.oneandone.tech.poker.leo.data.Result
+
 import spock.lang.Specification
 import spock.lang.Subject
 
@@ -57,7 +62,7 @@ class GameSessionTest extends Specification {
 
         then:
         stats.currentVotes == 0
-        stats.players.empty
+        stats.playerVotes.empty
     }
 
 
@@ -70,7 +75,7 @@ class GameSessionTest extends Specification {
 
         then:
         stats.currentVotes == 0
-        stats.players.size() == 1
+        stats.playerVotes.size() == 1
 
         when:
         gameSession.vote(player1, Choice.V13)
@@ -78,7 +83,7 @@ class GameSessionTest extends Specification {
 
         then:
         stats.currentVotes == 1
-        stats.players.size() == 1
+        stats.playerVotes.size() == 1
     }
 
     def "votes can be reset"() {

@@ -20,10 +20,12 @@
     <div class="col-md-10">
         <div class="panel panel-default">
             <div class="panel-heading"><span data-th-text="${stats.currentVotes}"></span>/<span
-                    data-th-text="${stats.players.size()}"></span></div>
+                    data-th-text="${stats.playerVotes.size()}"></span></div>
             <div class="panel-body">
-                <ul>
-                    <li data-th-each="player : ${stats.players}" data-th-text="${player}"></li>
+                <ul class="list-group">
+                    <li class="list-group-item" data-th-each="playerVote : ${stats.playerVotes}"
+                        data-th-text="${playerVote.playerName}"
+                        data-th-classappend="${playerVote.voted} ? 'list-group-item-success' : ''"></li>
                 </ul>
             </div>
         </div>

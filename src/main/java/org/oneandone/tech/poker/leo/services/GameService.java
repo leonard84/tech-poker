@@ -3,6 +3,7 @@ package org.oneandone.tech.poker.leo.services;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.oneandone.tech.poker.leo.data.GameId;
 import org.springframework.stereotype.Service;
 
 @Service
