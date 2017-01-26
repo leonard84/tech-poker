@@ -1,19 +1,20 @@
 package org.oneandone.tech.poker.leo.data;
 
-import java.util.EnumMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 public class Result {
     private double average;
     private int min;
     private int max;
-    private Map<Choice, Integer> votes = new EnumMap<>(Choice.class);
+    private List<ChoiceResult> votes = new ArrayList<>();
 
-    public Result(double average, int min, int max, Map<Choice, Integer> votes) {
+    public Result(double average, int min, int max, Collection<ChoiceResult> votes) {
         this.average = average;
         this.min = min;
         this.max = max;
-        this.votes.putAll(votes);
+        this.votes.addAll(votes);
     }
 
     public double getAverage() {
@@ -28,7 +29,7 @@ public class Result {
         return max;
     }
 
-    public Map<Choice, Integer> getVotes() {
+    public List<ChoiceResult> getVotes() {
         return votes;
     }
 }

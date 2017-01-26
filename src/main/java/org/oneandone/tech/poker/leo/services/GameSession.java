@@ -5,12 +5,14 @@ import static java.util.function.Function.identity;
 import java.time.Instant;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import org.oneandone.tech.poker.leo.data.Choice;
+import org.oneandone.tech.poker.leo.data.ChoiceResult;
 import org.oneandone.tech.poker.leo.data.GameId;
 import org.oneandone.tech.poker.leo.data.GameStats;
 import org.oneandone.tech.poker.leo.data.PlayerId;
@@ -59,13 +61,20 @@ public class GameSession {
         Map<Choice, Integer> grouped = votes.values().stream().collect(
                 Collectors.groupingBy(identity(), Collectors.summingInt(i -> 1)));
 
-        Arrays.stream(Choice.values()).forEach(c -> grouped.putIfAbsent(c, 0));
+        List<ChoiceResult> results = Arrays.stream(Choice.values())
+                .map(choice -> new ChoiceResult(choice,
+                        grouped.getOrDefault(choice, 0),
+                        votes.entrySet().stream()
+                                .filter(e -> e.getValue() == choice)
+                                .map(e->players.get(e.getKey()))
+                                .collect(Collectors.toList())))
+                .collect(Collectors.toList());
 
         return new Result(
                 resultStream().average().orElse(0.0),
                 resultStream().min().orElse(0),
                 resultStream().max().orElse(0),
-                grouped);
+                results);
     }
 
     public GameStats getStats() {

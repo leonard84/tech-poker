@@ -35,10 +35,10 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr  data-th-each="entry : ${result.votes.entrySet()}" class="result-list">
-                                <td class="result-key text-right" data-th-text="${ #messages.msg('card.values.' + entry.key) }"></td>
-                                <td class="result-value text-right" data-th-text="${entry.value}"></td>
-                                <td>&nbsp;</td>
+                            <tr  data-th-each="entry : ${result.votes}" class="result-list">
+                                <td class="result-key text-right" data-th-text="${ #messages.msg('card.values.' + entry.choice) }"></td>
+                                <td class="result-value text-right" data-th-text="${entry.count}"></td>
+                                <td  data-th-text="${#strings.listJoin(entry.players,', ')}">&nbsp;</td>
                             </tr>
                         </tbody>
                     </table>
