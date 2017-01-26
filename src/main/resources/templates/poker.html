@@ -25,7 +25,7 @@
             <div class="panel-body">
                 <div class="progress">
                     <div class="progress-bar" role="progressbar"
-                         style="width: 60%;" data-th-style="${'width: '+((stats.currentVotes*100)/stats.playerVotes.size())+'%'}">
+                         style="width: 60%;" data-th-style="${'width: '+(stats.playerVotes.size() > 0 ? (stats.currentVotes*100)/stats.playerVotes.size():0)+'%'}">
                         <span data-th-text="${stats.currentVotes}"></span>/<span
                             data-th-text="${stats.playerVotes.size()}"></span>
                     </div>

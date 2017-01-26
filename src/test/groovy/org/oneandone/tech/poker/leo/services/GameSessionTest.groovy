@@ -37,7 +37,7 @@ class GameSessionTest extends Specification {
         Result result = gameSession.tally()
 
         then:
-        result.average == 0.0
+        result.average == 0.0d
         result.max == 0
         result.min == 0
     }
@@ -47,18 +47,33 @@ class GameSessionTest extends Specification {
         def player1 = gameSession.join('player1')
         gameSession.vote(player1, Choice.V13)
 
+        def player2 = gameSession.join('player2')
+        gameSession.vote(player2, Choice.V13)
+
+        def player3 = gameSession.join('player3')
+        gameSession.vote(player3, Choice.COFFEE)
+
         when:
         Result result = gameSession.tally()
 
         then:
-        result.average == 13.0
+        result.average == 13.0d
         result.max == 13
         result.min == 13
+
+        and:
+        result.votes.choice == Choice.values() as List
+
+        and:
+        result.votes.players == [[], [], [], [], [], ['player1', 'player2'], [], [], [], ['player3'], []]
+
+        and:
+        result.votes.count == [0,0,0,0,0,2,0,0,0,1,0]
     }
 
     def "game stats can be queried for no players"() {
         when:
-        GameStats stats = gameSession.getStats()
+        GameStats stats = gameSession.stats
 
         then:
         stats.currentVotes == 0
@@ -76,6 +91,7 @@ class GameSessionTest extends Specification {
         then:
         stats.currentVotes == 0
         stats.playerVotes.size() == 1
+        !stats.playerVotes[0].hasVoted()
 
         when:
         gameSession.vote(player1, Choice.V13)
@@ -84,6 +100,7 @@ class GameSessionTest extends Specification {
         then:
         stats.currentVotes == 1
         stats.playerVotes.size() == 1
+        stats.playerVotes[0].hasVoted()
     }
 
     def "votes can be reset"() {

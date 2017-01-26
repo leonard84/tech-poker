@@ -67,6 +67,7 @@ public class GameSession {
                         votes.entrySet().stream()
                                 .filter(e -> e.getValue() == choice)
                                 .map(e->players.get(e.getKey()))
+                                .sorted()
                                 .collect(Collectors.toList())))
                 .collect(Collectors.toList());
 
