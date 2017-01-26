@@ -2,6 +2,7 @@
 export JAVA_HOME=/etc/alternatives/java_sdk_1.8.0
 export PATH=$JAVA_HOME/bin:$PATH
 export M2_HOME=$OPENSHIFT_TMP_DIR/.m2
+export MAVEN_USER_HOME=$M2_HOME
 mkdir $M2_HOME
 cd $OPENSHIFT_REPO_DIR
 ./mvnw clean package -P openshift -s .openshift/settings.xml -DskipTests=true
