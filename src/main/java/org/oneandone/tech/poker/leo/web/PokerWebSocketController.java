@@ -17,11 +17,11 @@ public class PokerWebSocketController {
     private GameService gameService;
 
     @MessageMapping("/join")
-    @SendTo("/topic/greetings")
-    public String greeting(JoinRequest request) throws Exception {
+    @SendTo("/topic/requestJoin")
+    public String greeting(String name) throws Exception {
         Thread.sleep(1000); // simulated delay
-        GameSession gameSession = gameService.getById(new GameId(request.getSessionId()));
-        return "hello";
+//        GameSession gameSession = gameService.getById(new GameId(request.getSessionId()));
+        return "hello " + name;
     }
 
 }

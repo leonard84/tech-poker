@@ -35,8 +35,8 @@ public class PokerController {
     @Inject
     private GameService gameService;
 
-    @RequestMapping(path = "/test", method = RequestMethod.GET)
-    public String test() {
+    @RequestMapping(path = "/test/{sessionId}", method = RequestMethod.GET)
+    public String test(@PathVariable String sessionId) {
         return "websocket";
     }
 
