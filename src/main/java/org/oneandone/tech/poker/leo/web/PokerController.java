@@ -45,6 +45,7 @@ public class PokerController {
     public ModelAndView websocketMaster(@PathVariable("gameId") String gameId, ModelAndView modelAndView) {
         GameSession game = getGame(gameId);
         modelAndView.addObject("gameId", game.getId());
+        modelAndView.addObject("externalUrl", pokerConfig.getExternalUrl());
         modelAndView.setViewName("websocket-master");
         return modelAndView;
     }
