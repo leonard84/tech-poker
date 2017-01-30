@@ -34,13 +34,42 @@ function loadCards() {
 }
 
 function init() {
-    $('#sessionId').val(window.location.hash.substring(1));
+    var query = window.location.hash.substring(1);
+    var tmp = query.split(',');
+    sessionId = tmp[0];
+    playerId = tmp[1];
+    $('#sessionId').val(sessionId);
+
     var voteSource = $("#vote-template").html();
     voteTemplate = Handlebars.compile(voteSource);
+
+    if (typeof (playerId) !== "undefined") {
+        setTimeout(function () {
+            fetchStats(sessionId, playerId);
+            playerJoined(sessionId, playerId);
+        }, 10);
+    }
+}
+
+function fetchStats(session, player) {
+    $.ajax({
+        url: '/rest/stats/' + session + '/' + player,
+        type: 'GET',
+        dataType: 'json'
+    }).done(function (data) {
+        console.log(data);
+        playerName = data.playerName;
+        setTimeout(function () {
+            $('.card').removeClass('selected');
+            $('.card[data-card="' + data.vote + '"]').addClass('selected');
+        }, 500);
+    }).fail(function (err) {
+        console.log(err);
+    });
 }
 
 function render() {
-    var context = {cards: cards, playerName: playerName};
+    var context = {cards: cards, playerName: playerName, sessionId: sessionId, playerId: playerId};
     $('#container').html(voteTemplate(context));
     $('.card').click(
         function () {
@@ -51,10 +80,13 @@ function render() {
             vote(cardValue);
         }
     );
+    $('#reconnect').click(function () {
+        window.location.reload(true);
+    });
 }
 
 function vote(value) {
-    console.log("vote: "+value);
+    console.log("vote: " + value);
     stompClient.send('/app/session/vote', {}, JSON.stringify({sessionId: sessionId, playerId: playerId, vote: value}));
 }
 
@@ -75,7 +107,8 @@ $(function () {
             dataType: 'json'
         }).done(function (data) {
             console.log(data);
-            playerJoined(data.sessionId, data.playerId)
+            window.location.hash = data.sessionId + "," + data.playerId;
+            playerJoined(data.sessionId, data.playerId);
         }).fail(function (err) {
             console.log(err);
         });

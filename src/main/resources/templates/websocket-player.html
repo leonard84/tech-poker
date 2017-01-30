@@ -44,6 +44,10 @@
         </div>
         {{/each}}
     </div>
+    <div class="col-xs-12">
+        <a href="vote/{{sessionId}}/{{playerId}}" class="btn btn-default">Switch to Plain Variant</a>
+        <a href="#{{sessionId}},{{playerId}}" id="reconnect" class="btn btn-default">Reconnect Websocket</a>
+    </div>
 </script>
 </body>
 </html>

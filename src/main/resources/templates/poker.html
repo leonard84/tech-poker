@@ -39,8 +39,9 @@
              data-th-attr="data-qr-url=${externalUrl}+@{/join?gameId=__${gameId}__}"></div>
     </div>
     <div class="col-md-12">
-        <form data-th-action="@{/result/__${gameId}__}" method="post">
+        <form data-th-action="@{/result/__${gameId}__}" method="post" class="form-inline">
             <input type="submit" value="Finish Vote" class="btn btn-primary"/>
+            <a href="websocket-master.html" data-th-href="@{/wm/__${gameId}__}" class="btn btn-default">Switch to Websockets</a>
         </form>
     </div>
 </div>

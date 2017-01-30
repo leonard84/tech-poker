@@ -14,6 +14,7 @@ import org.oneandone.tech.poker.leo.messages.Card;
 import org.oneandone.tech.poker.leo.messages.Cards;
 import org.oneandone.tech.poker.leo.messages.JoinRequest;
 import org.oneandone.tech.poker.leo.messages.JoinResponse;
+import org.oneandone.tech.poker.leo.messages.PlayerStats;
 import org.oneandone.tech.poker.leo.messages.SessionMessage;
 import org.oneandone.tech.poker.leo.messages.VoteMessage;
 import org.oneandone.tech.poker.leo.services.GameService;
@@ -22,6 +23,7 @@ import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -55,6 +57,15 @@ public class PokerWebSocketController {
                 .collect(Collectors.toList());
 
         return new Cards(cards);
+    }
+
+    @RequestMapping(path = "/rest/stats/{sessionId}/{playerId}", method = RequestMethod.GET, produces = "application/json")
+    @ResponseBody
+    public PlayerStats playerStats(@PathVariable("sessionId") String sessionId, @PathVariable("playerId") String playerId) {
+        GameSession gameSession = gameService.getById(new GameId(sessionId));
+        PlayerId player = new PlayerId(playerId);
+
+        return new PlayerStats(gameSession.getName(player), gameSession.getVote(player).name());
     }
 
 

@@ -125,6 +125,7 @@ public class PokerController {
         Choice vote = game.getVote(playerId1);
         String playerName = game.getName(playerId1);
         modelAndView.addObject("gameId", game.getId());
+        modelAndView.addObject("playerId", playerId1);
         modelAndView.addObject("cards", CARDS);
         modelAndView.addObject("playerName", playerName);
         modelAndView.addObject("vote", Optional.ofNullable(vote).map(Enum::name).orElse(""));

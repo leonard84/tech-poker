@@ -14,11 +14,11 @@
 
     <div class="col-md-6">
         <h2>Plain HTML</h2>
-        <form data-th-action="@{/new}" method="post">
+        <form data-th-action="@{/new}" method="post" class="form-inline">
             <input type="submit" class="btn btn-primary" value="Start a new Planning Session"/>
         </form>
 
-        <form data-th-action="@{/join}" method="get">
+        <form data-th-action="@{/join}" method="get" class="form-inline">
             <div class="input-group">
                 <input type="text" name="gameId" class="form-control" placeholder="Session Id"/>
                 <span class="input-group-btn">
@@ -31,10 +31,10 @@
     <div class="col-md-6">
         <h2>Fancy Websockets</h2>
 
-        <form data-th-action="@{/new/ws}" method="post">
-            <a href="wp" class="btn btn-primary" data-th-href="@{/wp}">Join Websockets</a>
+        <form data-th-action="@{/new/ws}" method="post" class="form-inline">
             <input type="submit" class="btn btn-primary" value="Start a new Planning Session with Websockets"/>
         </form>
+        <a href="wp" class="btn btn-primary" data-th-href="@{/wp}">Join Websockets</a>
     </div>
 </div>
 </body>
