@@ -5,6 +5,7 @@ import static java.util.function.Function.identity;
 import java.time.Instant;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.IntSummaryStatistics;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -17,6 +18,7 @@ import org.oneandone.tech.poker.leo.data.Choice;
 import org.oneandone.tech.poker.leo.data.ChoiceResult;
 import org.oneandone.tech.poker.leo.data.GameId;
 import org.oneandone.tech.poker.leo.data.GameStats;
+import org.oneandone.tech.poker.leo.data.MedianIntConsumer;
 import org.oneandone.tech.poker.leo.data.PlayerId;
 import org.oneandone.tech.poker.leo.data.PlayerVote;
 import org.oneandone.tech.poker.leo.data.Result;
@@ -84,10 +86,14 @@ public class GameSession {
                                 .collect(Collectors.toList())))
                 .collect(Collectors.toList());
 
+        MedianIntConsumer medianIntConsumer = new MedianIntConsumer();
+        IntSummaryStatistics statistics = resultStream().peek(medianIntConsumer).summaryStatistics();
+
         Result result = new Result(
-                resultStream().average().orElse(0.0),
-                resultStream().min().orElse(0),
-                resultStream().max().orElse(0),
+                statistics.getAverage(),
+                statistics.getMin(),
+                statistics.getMax(),
+                medianIntConsumer.getMedian(),
                 results);
         simpMessagingTemplate.convertAndSend("/topic/session/" + id + "/result", result);
         return result;

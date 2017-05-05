@@ -69,6 +69,8 @@ function updateGame(data) {
 
 function showResult(data) {
     if (mode === 'result') {
+        data.averageRounded = parseFloat(data.average).toFixed(1);
+        data.medianRounded = parseFloat(data.median).toFixed(1);
         var html = resultTemplate(data);
         $('#content').html(html);
         $('#reset').click(resetVotes);

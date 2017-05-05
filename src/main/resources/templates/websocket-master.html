@@ -62,9 +62,14 @@
     <div class="col-md-12">
         <div class="panel panel-default">
             <div class="panel-heading">
-                Min: {{min}}
-                Average:{{average}}
-                Max:{{max}}
+                <h3>
+                Average: {{averageRounded}}
+                    <small>
+                        Min: {{min}}
+                        Max: {{max}}
+                    </small>
+                Median: {{medianRounded}}
+                </h3>
             </div>
             <div class="panel-body">
                 <div class="table-responsive">
