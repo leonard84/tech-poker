@@ -32,7 +32,9 @@ public class MedianIntConsumer implements IntConsumer {
     }
 
     public double getMedian() {
-        if ((count & 1) == 1) {
+        if (count == 0) {
+            return 0.0;
+        } else if ((count & 1) == 1) {
             return max.peek().doubleValue();
         } else {
             return (max.peek().doubleValue() + min.peek().doubleValue()) / 2;
