@@ -10,3 +10,10 @@ server:
   port: 8080
 poker:
   external-url: http://localhost:8080
+---
+spring:
+  profiles: heroku
+poker:
+  external-url: https://tech-poker.herokuapp.com/
+management:
+  add-application-context-header: false
