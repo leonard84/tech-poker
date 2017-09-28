@@ -16,6 +16,6 @@ poker:
 spring:
   profiles: heroku
 poker:
-  external-url: https://tech-poker.herokuapp.com/
+  external-url: https://tech-poker.herokuapp.com
 management:
   add-application-context-header: false

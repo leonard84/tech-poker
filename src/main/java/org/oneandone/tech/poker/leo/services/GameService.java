@@ -38,13 +38,23 @@ public class GameService {
         return gameSession.getId();
     }
 
+    public int getCurrentSessionCount() {
+        return games.size();
+    }
+
     @Scheduled(fixedDelayString = "#{pokerProperties.cleanupInterval}")
     public void cleanupOldSessions() {
-        LOG.info("Expiring old sessions.");
-        int oldSize = games.size();
-        Instant expiredTimestamp = Instant.now().minus(pokerProperties.getCleanupExpired(), ChronoUnit.MILLIS);
-        games.entrySet().removeIf(sessionEntry -> sessionEntry.getValue().getLastUpdate().isBefore(expiredTimestamp));
-        int newSize = games.size();
-        LOG.info("Expired {} sessions. {} sessions are still active.", oldSize - newSize, newSize);
+        LOG.debug("Expiring old sessions.");
+
+        if (!games.isEmpty()) {
+            int oldSize = games.size();
+            Instant expiredTimestamp = Instant.now().minus(pokerProperties.getCleanupExpired(), ChronoUnit.MILLIS);
+            games.entrySet().removeIf(sessionEntry -> sessionEntry.getValue().getLastUpdate().isBefore(expiredTimestamp));
+            int newSize = games.size();
+            int expiredSessions = oldSize - newSize;
+            if (expiredSessions > 0) {
+                LOG.info("Expired {} sessions. {} sessions are still active.", expiredSessions, newSize);
+            }
+        }
     }
 }

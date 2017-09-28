@@ -17,15 +17,19 @@
 </head>
 <body>
 <div class="container">
-    <div class="col-md-10">
+    <div class="col-xs-12">
+        <h1>Tech Poker</h1>
+    </div>
+    <div class="col-sm-8 col-xs-12">
         <div class="panel panel-default">
             <div class="panel-heading">
-               Vote in Progress
+                Vote in Progress
             </div>
             <div class="panel-body">
                 <div class="progress">
                     <div class="progress-bar" role="progressbar"
-                         style="width: 60%;" data-th-style="${'width: '+(stats.playerVotes.size() > 0 ? (stats.currentVotes*100)/stats.playerVotes.size():0)+'%'}">
+                         style="width: 60%;"
+                         data-th-style="${'width: '+(stats.playerVotes.size() > 0 ? (stats.currentVotes*100)/stats.playerVotes.size():0)+'%'}">
                         <span data-th-text="${stats.currentVotes}"></span>/<span
                             data-th-text="${stats.playerVotes.size()}"></span>
                     </div>
@@ -37,7 +41,8 @@
                         <span class="pull-right">
                             <form data-th-action="@{/kick/__${gameId}__}" method="post">
                                 <input type="hidden" name="playerId" data-th-value="${playerVote.playerId}">
-                                <button class="btn btn-xs btn-danger" type="submit"><span class="glyphicon glyphicon-remove"></span></button>
+                                <button class="btn btn-xs btn-danger" type="submit"><span
+                                        class="glyphicon glyphicon-remove"></span></button>
                             </form>
                         </span>
                     </li>
@@ -45,17 +50,26 @@
             </div>
         </div>
     </div>
-    <div class="col-md-2">
+    <div class="col-sm-4 hidden-xs">
         <div id="joinQr" data-qr-url="http://localhost/session/3847599023409"
              data-th-attr="data-qr-url=${externalUrl}+@{/join?gameId=__${gameId}__}"></div>
     </div>
-    <div class="col-md-12">
+    <div class="col-xs-12">
         <form data-th-action="@{/result/__${gameId}__}" method="post" class="form-inline">
             <button type="submit" class="btn btn-primary">
-                <span class="glyphicon glyphicon-check"></span> Finish Vote</button>
+                <span class="glyphicon glyphicon-check"></span> Finish Vote
+            </button>
             <a href="websocket-master.html" data-th-href="@{/wm/__${gameId}__}" class="btn btn-default">
                 <span class="glyphicon glyphicon-cloud"></span> Switch to Websockets</a>
         </form>
+    </div>
+
+    <div class="col-xs-12" style="height:50px;"></div>
+
+    <div class="col-xs-12">
+            Join Link:
+            <a href="#" id="joinlink" data-th-href="${externalUrl}+@{/join?gameId=__${gameId}__}"
+               data-th-text="${externalUrl}+@{/join?gameId=__${gameId}__}" target="_blank"></a>
     </div>
 </div>
 </body>

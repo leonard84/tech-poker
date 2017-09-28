@@ -9,9 +9,9 @@ public class PokerProperties {
 
     private String externalUrl;
 
-    private long cleanupInterval = 60000;
+    private long cleanupInterval = 60_000;
 
-    private long cleanupExpired = 600000;
+    private long cleanupExpired = 6_000_000;
 
     public String getExternalUrl() {
         return externalUrl;

@@ -26,10 +26,9 @@
 </div>
 <script id="game-template" type="text/x-handlebars-template">
     <div class="col-xs-12">
-        <h1>Planning Poker</h1>
-
+        <h1>Tech Poker</h1>
     </div>
-    <div class="col-md-10">
+    <div class="col-sm-8 col-xs-12">
         <div class="panel panel-default">
             <div class="panel-heading">
                 Vote in Progress
@@ -53,19 +52,28 @@
             </div>
         </div>
     </div>
-    <div class="col-md-2">
+    <div class="col-sm-4 hidden-xs">
         <div id="joinQr" data-qr-url="http://localhost/session/3847599023409"
              data-th-attr="data-qr-url=${externalUrl}+@{/join?gameId=__${gameId}__}"></div>
     </div>
-    <div class="col-md-12">
+    <div class="col-xs-12">
         <button class="btn btn-primary" id="finish">
             <span class="glyphicon glyphicon-check"></span> Finish Vote</button>
         <a href="websocket-master.html" data-th-href="@{/game/__${gameId}__}" class="btn btn-default">
             <span class="glyphicon glyphicon-list-alt"></span> Switch to Plain Variant</a>
     </div>
+
+    <div class="col-xs-12" style="height:50px;"></div>
+
+    <div class="col-xs-12">
+        Join Link:
+        <a href="#" id="joinlink" data-th-href="${externalUrl}+@{/join?gameId=__${gameId}__}"
+           data-th-text="${externalUrl}+@{/join?gameId=__${gameId}__}" target="_blank"></a>
+        <button id="copyToClipboard" class="btn btn-sm btn-default"><span class="glyphicon glyphicon-copy"></span></button>
+    </div>
 </script>
 <script id="result-template" type="text/x-handlebars-template">
-    <div class="col-md-12">
+    <div class="col-xs-12">
         <div class="panel panel-default">
             <div class="panel-heading">
                 <h3>
@@ -101,10 +109,10 @@
             </div>
         </div>
     </div>
-    <div class="col-md-12">
+    <div class="col-xs-12">
         <div id="histogram"></div>
     </div>
-    <div class="col-md-12">
+    <div class="col-xs-12">
         <button class="btn btn-primary" id="reset"><span class="glyphicon glyphicon-erase"></span> Reset Vote</button>
     </div>
 </script>

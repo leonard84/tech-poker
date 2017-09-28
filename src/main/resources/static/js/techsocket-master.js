@@ -63,6 +63,7 @@ function updateGame(data) {
         $('#content').html(html);
         $('#finish').click(finishVoting);
         $('.kick-player').click(kickPlayer);
+        $('#copyToClipboard').click(copyToClipboard);
         renderQr();
     }
 }
@@ -110,6 +111,17 @@ function resetVotes() {
     mode = "voting";
     stompClient.send("/app/session/reset", {}, JSON.stringify({sessionId: sessionId}));
     updateStats();
+}
+
+
+function copyToClipboard() {
+    var range = document.createRange();
+    range.selectNodeContents(document.getElementById("joinlink"));
+    var selection = window.getSelection();
+    selection.removeAllRanges();
+    selection.addRange(range);
+    document.execCommand("copy");
+    selection.removeAllRanges();
 }
 
 $(function () {

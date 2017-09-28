@@ -53,6 +53,7 @@ public class PokerController {
 
     @RequestMapping(path = "/", method = RequestMethod.GET)
     public ModelAndView index(ModelAndView modelAndView) {
+        modelAndView.addObject("sessionCount", gameService.getCurrentSessionCount());
         modelAndView.setViewName("index");
         return modelAndView;
     }
