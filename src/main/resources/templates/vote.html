@@ -15,7 +15,11 @@
 </head>
 <body>
 <div class="container">
-    <h2>Hello <span data-th-text="${playerName}" data-th-remove="tag"></span> </h2>
+    <div class="col-xs-12">
+        <h1 class="hidden-xs">Tech Poker <img src="img/logo-48.png" data-th-src="@{/img/logo-48.png}">
+        <span class="pull-right">Hello <span data-th-text="${playerName}" data-th-remove="tag"></span> </span>
+        </h1>
+    </div>
     <div class="blue-cards">
         <form id="voteForm" method="post">
             <input type="hidden" name="vote" value="" data-th-value="${vote}"/>

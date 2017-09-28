@@ -3,6 +3,7 @@ package org.oneandone.tech.poker.leo.web;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import javax.inject.Inject;
@@ -10,6 +11,7 @@ import javax.inject.Inject;
 import org.oneandone.tech.poker.leo.data.Choice;
 import org.oneandone.tech.poker.leo.data.GameId;
 import org.oneandone.tech.poker.leo.data.PlayerId;
+import org.oneandone.tech.poker.leo.exceptions.GameNotFoundException;
 import org.oneandone.tech.poker.leo.messages.Card;
 import org.oneandone.tech.poker.leo.messages.Cards;
 import org.oneandone.tech.poker.leo.messages.JoinRequest;
@@ -40,10 +42,13 @@ public class PokerWebSocketController {
     private MessageSource messageSource;
 
 
-    @RequestMapping(path = "/rest/join", method = RequestMethod.POST, produces = "application/json", consumes = "application/json")
+    @RequestMapping(path = "/rest/join", method = RequestMethod.POST, produces = "application/json", consumes =
+            "application/json")
     @ResponseBody
     public JoinResponse join(@RequestBody JoinRequest joinRequest) {
-        GameSession gameSession = gameService.getById(new GameId(joinRequest.getSessionId()));
+        GameSession gameSession = gameService.searchById(new GameId(joinRequest.getSessionId()))
+                .orElseThrow(GameNotFoundException::new);
+
         return new JoinResponse(gameSession.getId().toString(),
                 gameSession.join(joinRequest.getPlayerName()).toString());
     }
@@ -54,7 +59,7 @@ public class PokerWebSocketController {
         Locale locale = LocaleContextHolder.getLocaleContext().getLocale();
         List<Card> cards = Arrays.stream(Choice.values())
                 .map(choice ->
-                    new Card(choice.name(), messageSource.getMessage("card.values." + choice.name(), null, locale)))
+                        new Card(choice.name(), messageSource.getMessage("card.values." + choice.name(), null, locale)))
                 .collect(Collectors.toList());
 
         return new Cards(cards);
@@ -63,7 +68,7 @@ public class PokerWebSocketController {
     @RequestMapping(path = "/rest/stats/{sessionId}/{playerId}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     public PlayerStats playerStats(@PathVariable("sessionId") String sessionId, @PathVariable("playerId") String playerId) {
-        GameSession gameSession = gameService.getById(new GameId(sessionId));
+        GameSession gameSession = gameService.searchById(new GameId(sessionId)).orElseThrow(GameNotFoundException::new);
         PlayerId player = new PlayerId(playerId);
 
         return new PlayerStats(gameSession.getName(player), gameSession.getVote(player).name());
@@ -72,31 +77,31 @@ public class PokerWebSocketController {
 
     @MessageMapping("/session/stats")
     public void gameStats(SessionMessage session) {
-        GameSession gameSession = gameService.getById(new GameId(session.getSessionId()));
-        gameSession.sendStats();
+        Optional<GameSession> gameSession = gameService.searchById(new GameId(session.getSessionId()));
+        gameSession.ifPresent(GameSession::sendStats);
     }
 
     @MessageMapping("/session/reset")
     public void gameReset(SessionMessage session) {
-        GameSession gameSession = gameService.getById(new GameId(session.getSessionId()));
-        gameSession.reset();
+        Optional<GameSession> gameSession = gameService.searchById(new GameId(session.getSessionId()));
+        gameSession.ifPresent(GameSession::reset);
     }
 
     @MessageMapping("/session/tally")
     public void gameTally(SessionMessage session) {
-        GameSession gameSession = gameService.getById(new GameId(session.getSessionId()));
-        gameSession.tally();
+        Optional<GameSession> gameSession = gameService.searchById(new GameId(session.getSessionId()));
+        gameSession.ifPresent(GameSession::tally);
     }
 
     @MessageMapping("/session/vote")
     public void gameVote(VoteMessage voteMessage) {
-        GameSession gameSession = gameService.getById(new GameId(voteMessage.getSessionId()));
-        gameSession.vote(new PlayerId(voteMessage.getPlayerId()), Choice.valueOf(voteMessage.getVote()));
+        Optional<GameSession> gameSession = gameService.searchById(new GameId(voteMessage.getSessionId()));
+        gameSession.ifPresent(gs -> gs.vote(new PlayerId(voteMessage.getPlayerId()), Choice.valueOf(voteMessage.getVote())));
     }
 
     @MessageMapping("/session/kick")
     public void gameKick(KickMessage kickMessage) {
-        GameSession gameSession = gameService.getById(new GameId(kickMessage.getSessionId()));
-        gameSession.kickPlayer(new PlayerId(kickMessage.getPlayerId()));
+        Optional<GameSession> gameSession = gameService.searchById(new GameId(kickMessage.getSessionId()));
+        gameSession.ifPresent(gs -> gs.kickPlayer(new PlayerId(kickMessage.getPlayerId())));
     }
 }

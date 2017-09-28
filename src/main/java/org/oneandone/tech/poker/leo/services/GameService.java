@@ -3,6 +3,7 @@ package org.oneandone.tech.poker.leo.services;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
 import javax.inject.Inject;
@@ -23,6 +24,9 @@ public class GameService {
 
     public GameSession getById(GameId gameId) {
         return games.get(gameId);
+    }
+    public Optional<GameSession> searchById(GameId gameId) {
+        return Optional.ofNullable(games.get(gameId));
     }
 
     @Inject
