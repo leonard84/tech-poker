@@ -32,8 +32,15 @@
                 </div>
                 <ul class="list-group">
                     <li class="list-group-item" data-th-each="playerVote : ${stats.playerVotes}"
-                        data-th-text="${playerVote.playerName}"
-                        data-th-classappend="${playerVote.voted} ? 'list-group-item-success' : ''"></li>
+                        data-th-classappend="${playerVote.voted} ? 'list-group-item-success' : ''">
+                        <span data-th-text="${playerVote.playerName}"></span>
+                        <span class="pull-right">
+                            <form data-th-action="@{/kick/__${gameId}__}" method="post">
+                                <input type="hidden" name="playerId" data-th-value="${playerVote.playerId}">
+                                <button class="btn btn-xs btn-danger" type="submit"><span class="glyphicon glyphicon-remove"></span></button>
+                            </form>
+                        </span>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -44,8 +51,10 @@
     </div>
     <div class="col-md-12">
         <form data-th-action="@{/result/__${gameId}__}" method="post" class="form-inline">
-            <input type="submit" value="Finish Vote" class="btn btn-primary"/>
-            <a href="websocket-master.html" data-th-href="@{/wm/__${gameId}__}" class="btn btn-default">Switch to Websockets</a>
+            <button type="submit" class="btn btn-primary">
+                <span class="glyphicon glyphicon-check"></span> Finish Vote</button>
+            <a href="websocket-master.html" data-th-href="@{/wm/__${gameId}__}" class="btn btn-default">
+                <span class="glyphicon glyphicon-cloud"></span> Switch to Websockets</a>
         </form>
     </div>
 </div>

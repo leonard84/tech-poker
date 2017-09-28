@@ -3,6 +3,8 @@ spring:
     name: Tech Poker
   messages:
       basename: messages
+  thymeleaf:
+    mode: HTML
 ---
 spring:
   profiles: default

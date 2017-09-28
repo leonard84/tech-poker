@@ -43,7 +43,11 @@
                 </div>
                 <ul class="list-group">
                     {{#each playerVotes}}
-                    <li class="list-group-item {{#if voted}}list-group-item-success{{/if}}">{{playerName}}</li>
+                    <li class="list-group-item {{#if voted}}list-group-item-success{{/if}}"><span>{{playerName}}</span>
+                        <span class="pull-right">
+                            <a data-player-id="{{playerId}}" class="btn btn-xs btn-danger kick-player" type="submit"><span class="glyphicon glyphicon-remove"></span></a>
+                        </span>
+                    </li>
                     {{/each}}
                 </ul>
             </div>
@@ -54,8 +58,10 @@
              data-th-attr="data-qr-url=${externalUrl}+@{/join?gameId=__${gameId}__}"></div>
     </div>
     <div class="col-md-12">
-        <button class="btn btn-primary" id="finish">Finish Vote</button>
-        <a href="websocket-master.html" data-th-href="@{/game/__${gameId}__}" class="btn btn-default">Switch to Plain Variant</a>
+        <button class="btn btn-primary" id="finish">
+            <span class="glyphicon glyphicon-check"></span> Finish Vote</button>
+        <a href="websocket-master.html" data-th-href="@{/game/__${gameId}__}" class="btn btn-default">
+            <span class="glyphicon glyphicon-list-alt"></span> Switch to Plain Variant</a>
     </div>
 </script>
 <script id="result-template" type="text/x-handlebars-template">
@@ -99,7 +105,7 @@
         <div id="histogram"></div>
     </div>
     <div class="col-md-12">
-        <button class="btn btn-primary" id="reset">Reset Vote</button>
+        <button class="btn btn-primary" id="reset"><span class="glyphicon glyphicon-erase"></span> Reset Vote</button>
     </div>
 </script>
 </body>

@@ -6,15 +6,16 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import javax.inject.Inject;
+import javax.validation.constraints.Size;
 import javax.ws.rs.FormParam;
 
 import org.oneandone.tech.poker.leo.config.PokerProperties;
-import org.oneandone.tech.poker.leo.exceptions.GameNotFoundException;
 import org.oneandone.tech.poker.leo.data.Choice;
 import org.oneandone.tech.poker.leo.data.GameId;
+import org.oneandone.tech.poker.leo.data.PlayerId;
+import org.oneandone.tech.poker.leo.exceptions.GameNotFoundException;
 import org.oneandone.tech.poker.leo.services.GameService;
 import org.oneandone.tech.poker.leo.services.GameSession;
-import org.oneandone.tech.poker.leo.data.PlayerId;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -59,13 +60,13 @@ public class PokerController {
     @RequestMapping(path = "/new", method = RequestMethod.POST)
     public View newGame() {
         GameId gameId = gameService.createNewGame();
-        return new RedirectView("/game/"+gameId);
+        return new RedirectView("/game/" + gameId);
     }
 
     @RequestMapping(path = "/new/ws", method = RequestMethod.POST)
     public View newGameWs() {
         GameId gameId = gameService.createNewGame();
-        return new RedirectView("/wm/"+gameId);
+        return new RedirectView("/wm/" + gameId);
     }
 
     @RequestMapping(path = "/game/{gameId}", method = RequestMethod.GET)
@@ -90,11 +91,11 @@ public class PokerController {
     public View reset(@PathVariable("gameId") String gameId) {
         GameSession game = getGame(gameId);
         game.reset();
-        return new RedirectView("/game/"+gameId);
+        return new RedirectView("/game/" + gameId);
     }
 
     @RequestMapping(path = "/join", method = RequestMethod.GET)
-    public ModelAndView requestJoinGame(@RequestParam("gameId") String gameId,ModelAndView modelAndView) {
+    public ModelAndView requestJoinGame(@RequestParam("gameId") String gameId, ModelAndView modelAndView) {
         GameSession game = getGame(gameId);
         modelAndView.addObject("gameId", game.getId());
         modelAndView.setViewName("join");
@@ -102,10 +103,19 @@ public class PokerController {
     }
 
     @RequestMapping(path = "/join/{gameId}", method = RequestMethod.POST)
-    public View joinGame(@PathVariable("gameId") String gameId, @FormParam("playerName") String playerName) {
+    public View joinGame(@PathVariable("gameId") String gameId, @FormParam("playerName") @Size(min = 3) String playerName) {
         GameSession game = getGame(gameId);
         PlayerId playerId = game.join(playerName);
-        return new RedirectView("/vote/"+gameId+"/"+playerId);
+        return new RedirectView("/vote/" + gameId + "/" + playerId);
+    }
+
+
+    @RequestMapping(path = "/kick/{gameId}", method = RequestMethod.POST)
+    public View kickPlayer(@PathVariable("gameId") String gameId, @FormParam("playerId") @Size(min = 36) String playerId) {
+        GameSession game = getGame(gameId);
+        PlayerId pId = new PlayerId(playerId);
+        game.kickPlayer(pId);
+        return new RedirectView("/game/" + gameId);
     }
 
     @RequestMapping(path = "/vote/{gameId}/{playerId}", method = RequestMethod.POST)
@@ -114,7 +124,7 @@ public class PokerController {
         GameSession game = getGame(gameId);
         PlayerId playerId1 = new PlayerId(playerId);
         game.vote(playerId1, Choice.valueOf(vote.toUpperCase()));
-        return new RedirectView("/vote/"+gameId+"/"+playerId);
+        return new RedirectView("/vote/" + gameId + "/" + playerId);
     }
 
     @RequestMapping(path = "/vote/{gameId}/{playerId}", method = RequestMethod.GET)

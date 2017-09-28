@@ -22,6 +22,7 @@ import org.oneandone.tech.poker.leo.data.MedianIntConsumer;
 import org.oneandone.tech.poker.leo.data.PlayerId;
 import org.oneandone.tech.poker.leo.data.PlayerVote;
 import org.oneandone.tech.poker.leo.data.Result;
+import org.oneandone.tech.poker.leo.exceptions.DuplicatedPlayerException;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.util.Assert;
 
@@ -51,6 +52,9 @@ public class GameSession {
 
     public PlayerId join(String playerName) {
         Assert.notNull(playerName, "playerName may not be null");
+        if (players.values().contains(playerName)) {
+            throw new DuplicatedPlayerException();
+        }
         updated();
         PlayerId playerId = new PlayerId();
         players.put(playerId, playerName);
@@ -63,6 +67,13 @@ public class GameSession {
         Assert.notNull(vote, "vote may not be null");
         updated();
         votes.put(playerId, vote);
+        sendStats();
+    }
+
+    public void kickPlayer(PlayerId id) {
+        players.remove(id);
+        votes.remove(id);
+        updated();
         sendStats();
     }
 
@@ -101,7 +112,7 @@ public class GameSession {
 
     public GameStats getStats() {
         Collection<PlayerVote> values = players.entrySet().stream()
-                .map(player -> new PlayerVote(player.getValue(), votes.containsKey(player.getKey())))
+                .map(player -> new PlayerVote(player.getKey(), player.getValue(), votes.containsKey(player.getKey())))
                 .collect(Collectors.toList());
         return new GameStats(values, votes.size());
     }

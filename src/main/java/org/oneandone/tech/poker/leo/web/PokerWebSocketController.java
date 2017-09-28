@@ -14,6 +14,7 @@ import org.oneandone.tech.poker.leo.messages.Card;
 import org.oneandone.tech.poker.leo.messages.Cards;
 import org.oneandone.tech.poker.leo.messages.JoinRequest;
 import org.oneandone.tech.poker.leo.messages.JoinResponse;
+import org.oneandone.tech.poker.leo.messages.KickMessage;
 import org.oneandone.tech.poker.leo.messages.PlayerStats;
 import org.oneandone.tech.poker.leo.messages.SessionMessage;
 import org.oneandone.tech.poker.leo.messages.VoteMessage;
@@ -91,5 +92,11 @@ public class PokerWebSocketController {
     public void gameVote(VoteMessage voteMessage) {
         GameSession gameSession = gameService.getById(new GameId(voteMessage.getSessionId()));
         gameSession.vote(new PlayerId(voteMessage.getPlayerId()), Choice.valueOf(voteMessage.getVote()));
+    }
+
+    @MessageMapping("/session/kick")
+    public void gameKick(KickMessage kickMessage) {
+        GameSession gameSession = gameService.getById(new GameId(kickMessage.getSessionId()));
+        gameSession.kickPlayer(new PlayerId(kickMessage.getPlayerId()));
     }
 }

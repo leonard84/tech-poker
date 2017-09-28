@@ -5,6 +5,8 @@ import java.util.UUID;
 
 import org.springframework.util.Assert;
 
+import com.fasterxml.jackson.annotation.JsonValue;
+
 public abstract class BaseId {
     private final String id;
 
@@ -17,6 +19,7 @@ public abstract class BaseId {
         id = UUID.randomUUID().toString();
     }
 
+    @JsonValue
     @Override
     public String toString() {
         return id;

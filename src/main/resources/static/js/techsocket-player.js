@@ -4,12 +4,17 @@ var voteTemplate = null;
 var playerName = "";
 var sessionId = "";
 var playerId = "";
+var errorCounter = 0;
 
 function playerJoined(session, player) {
     sessionId = session;
     playerId = player;
     var socket = new SockJS('/ws');
     stompClient = Stomp.over(socket);
+    connectToServer();
+}
+
+function connectToServer() {
     stompClient.connect({}, function (frame) {
         console.log('Connected: ' + frame);
         stompClient.subscribe("/topic/session/" + sessionId + "/reset", function () {
@@ -17,6 +22,17 @@ function playerJoined(session, player) {
             reset();
         });
         render();
+    }, function (error) {
+        console.log("WebSocket Connection Error.", error);
+        errorCounter++;
+        if (errorCounter < 10) {
+            var delay = (500 * errorCounter) + 1;
+            console.log("Trying to reconnect in " + delay + "ms");
+            setTimeout(connectToServer, delay);
+        } else {
+            console.log("Giving up reconnecting. Try reloading the page");
+            window.location.reload(true);
+        }
     });
 }
 

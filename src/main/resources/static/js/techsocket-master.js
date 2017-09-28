@@ -62,6 +62,7 @@ function updateGame(data) {
         var html = gameTemplate(data);
         $('#content').html(html);
         $('#finish').click(finishVoting);
+        $('.kick-player').click(kickPlayer);
         renderQr();
     }
 }
@@ -94,6 +95,11 @@ function showResult(data) {
 function finishVoting() {
     mode = "result";
     stompClient.send("/app/session/tally", {}, JSON.stringify({sessionId: sessionId}));
+}
+
+function kickPlayer(event) {
+    var playerId = $(event.currentTarget).data('player-id');
+    stompClient.send("/app/session/kick", {}, JSON.stringify({sessionId: sessionId, playerId: playerId}));
 }
 
 function updateStats() {

@@ -4,6 +4,8 @@
     <meta charset="UTF-8"/>
     <title>Tech Poker</title>
 
+    <script language="JavaScript" src="../static/js/jquery-3.1.1.min.js" data-th-src="@{/js/jquery-3.1.1.min.js}"></script>
+    <script language="JavaScript" src="../static/js/join.js" data-th-src="@{/js/join.js}"></script>
     <link rel="stylesheet" href="../static/css/bootstrap.min.css" data-th-href="@{/css/bootstrap.min.css}"
           data-th-if="${currentSitePreference.normal}"/>
     <link rel="stylesheet" href="../static/css/bootstrap.min.css" data-th-href="@{/css/theme/cyborg/bootstrap.min.css}"
@@ -16,17 +18,16 @@
         <h1>Planning Poker</h1>
     </div>
     <div class="col-md-6">
-        <form data-th-action="@{/join/__${gameId}__}" method="post">
+        <form id="joinform" data-th-action="@{/join/__${gameId}__}" method="post">
             <div class="input-group">
-                <input type="text" name="playerName" class="form-control" placeholder="Nickname"/>
+                <input type="text" name="playerName" id="playerName" class="form-control" placeholder="Nickname" minlength="3" required="true"/>
                 <span class="input-group-btn">
-                    <input class="btn btn-success" type="submit" value="Join"/>
+                    <button class="btn btn-success" type="submit"><span class="glyphicon glyphicon-list-alt"></span> Join Plain</button>
+                    <button class="btn btn-primary" id="joinws" data-th-attr="data-session-id='__${gameId}__'">
+                        <span class="glyphicon glyphicon-cloud"></span> Join Websockets</button>
                 </span>
             </div>
         </form>
-    </div>
-    <div class="col-md-6">
-        <a href="wp" class="btn btn-primary" data-th-href="@{/wp#__${gameId}__}">Join Websockets</a>
     </div>
 </div>
 </body>
