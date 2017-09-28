@@ -14,7 +14,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>1.4.3.RELEASE</version>
+        <version>1.5.7.RELEASE</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
@@ -97,7 +97,7 @@
                         visit https://github.com/groovy/GMavenPlus/wiki -->
                         <groupId>org.codehaus.gmavenplus</groupId>
                         <artifactId>gmavenplus-plugin</artifactId>
-                        <version>1.4</version>
+                        <version>1.5</version>
                         <executions>
                             <execution>
                                 <goals>
@@ -114,20 +114,20 @@
                 <dependency>
                     <groupId>org.spockframework</groupId>
                     <artifactId>spock-core</artifactId>
-                    <version>1.1-groovy-2.4-rc-3</version>
+                    <version>1.1-groovy-2.4</version>
                     <scope>test</scope>
                 </dependency>
                 <dependency>
                     <groupId>org.spockframework</groupId>
                     <artifactId>spock-spring</artifactId>
-                    <version>1.1-groovy-2.4-rc-3</version>
+                    <version>1.1-groovy-2.4</version>
                     <scope>test</scope>
                 </dependency>
                 <dependency>
                     <!-- To enable mocking of classes -->
                     <groupId>cglib</groupId>
                     <artifactId>cglib-nodep</artifactId>
-                    <version>3.2.4</version>
+                    <version>3.2.5</version>
                     <scope>test</scope>
                 </dependency>
                 <dependency>

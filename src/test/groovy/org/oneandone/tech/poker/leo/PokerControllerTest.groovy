@@ -9,6 +9,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import javax.inject.Inject
 
+import org.oneandone.tech.poker.leo.config.PokerProperties
 import org.oneandone.tech.poker.leo.services.GameService
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
@@ -25,6 +26,9 @@ class PokerControllerTest extends Specification {
 
     @Inject
     GameService gameService
+
+    @Inject
+    PokerProperties pokerProperties
 
     def "renders index"() {
         expect:
@@ -43,7 +47,7 @@ class PokerControllerTest extends Specification {
         expect:
         mockMvc.perform(get("/game/$gameId"))
                 .andExpect(view().name('poker'))
-                .andExpect(content().string(containsString("data-qr-url=\"http://localhost/game/$gameId\"")))
+                .andExpect(content().string(containsString("data-qr-url=\"${pokerProperties.externalUrl}/join?gameId=$gameId\"")))
     }
 
     def "join asks for a name"() {

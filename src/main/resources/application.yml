@@ -9,14 +9,4 @@ spring:
 server:
   port: 8080
 poker:
-  external-url: http://localhost:${server.port}
----
-spring:
-  profiles: openshift
-server:
-  port: ${OPENSHIFT_DIY_PORT}
-  address: ${OPENSHIFT_DIY_IP}
-poker:
-  external-url: https://${OPENSHIFT_GEAR_DNS}
-logging:
-  path: ${OPENSHIFT_DIY_LOG_DIR}
+  external-url: http://localhost:8080

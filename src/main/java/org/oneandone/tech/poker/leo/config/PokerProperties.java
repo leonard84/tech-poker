@@ -3,7 +3,7 @@ package org.oneandone.tech.poker.leo.config;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 @ConfigurationProperties(prefix = "poker")
-public class PokerConfig {
+public class PokerProperties {
 
     private String externalUrl;
 

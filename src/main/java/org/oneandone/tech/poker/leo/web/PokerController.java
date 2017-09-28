@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 import javax.inject.Inject;
 import javax.ws.rs.FormParam;
 
-import org.oneandone.tech.poker.leo.config.PokerConfig;
+import org.oneandone.tech.poker.leo.config.PokerProperties;
 import org.oneandone.tech.poker.leo.exceptions.GameNotFoundException;
 import org.oneandone.tech.poker.leo.data.Choice;
 import org.oneandone.tech.poker.leo.data.GameId;
@@ -30,7 +30,7 @@ public class PokerController {
     private static final List<String> CARDS = Arrays.stream(Choice.values()).map(Enum::name).collect(Collectors.toList());
 
     @Inject
-    private PokerConfig pokerConfig;
+    private PokerProperties pokerProperties;
 
     @Inject
     private GameService gameService;
@@ -45,7 +45,7 @@ public class PokerController {
     public ModelAndView websocketMaster(@PathVariable("gameId") String gameId, ModelAndView modelAndView) {
         GameSession game = getGame(gameId);
         modelAndView.addObject("gameId", game.getId());
-        modelAndView.addObject("externalUrl", pokerConfig.getExternalUrl());
+        modelAndView.addObject("externalUrl", pokerProperties.getExternalUrl());
         modelAndView.setViewName("websocket-master");
         return modelAndView;
     }
@@ -72,7 +72,7 @@ public class PokerController {
     public ModelAndView game(@PathVariable("gameId") String gameId, ModelAndView modelAndView) {
         GameSession game = getGame(gameId);
         modelAndView.addObject("gameId", game.getId());
-        modelAndView.addObject("externalUrl", pokerConfig.getExternalUrl());
+        modelAndView.addObject("externalUrl", pokerProperties.getExternalUrl());
         modelAndView.addObject("stats", game.getStats());
         modelAndView.setViewName("poker");
         return modelAndView;
