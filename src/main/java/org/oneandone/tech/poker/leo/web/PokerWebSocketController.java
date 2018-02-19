@@ -71,7 +71,8 @@ public class PokerWebSocketController {
         GameSession gameSession = gameService.searchById(new GameId(sessionId)).orElseThrow(GameNotFoundException::new);
         PlayerId player = new PlayerId(playerId);
 
-        return new PlayerStats(gameSession.getName(player), gameSession.getVote(player).name());
+        return new PlayerStats(gameSession.getName(player),
+                Optional.ofNullable(gameSession.getVote(player)).map(Enum::name).orElse(""));
     }
 
 
