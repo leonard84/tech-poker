@@ -9,12 +9,12 @@ var errorCounter = 0;
 function playerJoined(session, player) {
     sessionId = session;
     playerId = player;
-    var socket = new SockJS('/ws');
-    stompClient = Stomp.over(socket);
     connectToServer();
 }
 
 function connectToServer() {
+    var socket = new SockJS('/ws');
+    stompClient = Stomp.over(socket);
     stompClient.connect({}, function (frame) {
         console.log('Connected: ' + frame);
         stompClient.subscribe("/topic/session/" + sessionId + "/reset", function () {
