@@ -56,7 +56,7 @@
         <div id="joinQr" data-qr-url="http://localhost/session/3847599023409"
              data-th-attr="data-qr-url=${externalUrl}+@{/join?gameId=__${gameId}__}"></div>
     </div>
-    <div class="col-xs-12">
+    <div class="col-xs-12 action-bar">
         <button class="btn btn-primary" id="finish">
             <span class="glyphicon glyphicon-check"></span> <u>F</u>inish Vote</button>
         <a href="websocket-master.html" data-th-href="@{/game/__${gameId}__}" class="btn btn-default">
@@ -115,7 +115,7 @@
     <div class="col-xs-12">
         <div id="histogram"></div>
     </div>
-    <div class="col-xs-12">
+    <div class="col-xs-12 action-bar">
         <button class="btn btn-primary" id="reset"><span class="glyphicon glyphicon-backward"></span> <u>R</u>eset Vote</button>
         <button class="btn btn-default" id="refresh"><span class="glyphicon glyphicon-refresh"></span> Re<u>f</u>resh Results</button>
     </div>

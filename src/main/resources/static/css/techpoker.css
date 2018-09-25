@@ -1,6 +1,6 @@
 .card {
     /* Add shadows to create the "card" effect */
-    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
     transition: 0.3s;
     border-radius: 10px; /* 5px rounded corners */
     min-height: 16em;
@@ -8,7 +8,7 @@
 
 /* On mouse-over, add a deeper shadow */
 .card:hover {
-    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.7);
+    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.7);
     cursor: pointer;
 }
 
@@ -34,4 +34,16 @@
 
 .green-cards .card.selected {
     background-color: #9ECB6B;
+}
+
+@media (min-width: 768px) {
+    .action-bar {
+        position: fixed;
+        bottom: 0;
+        background-color: white;
+    }
+}
+
+body {
+    padding-bottom: 45px;
 }
