@@ -47,3 +47,7 @@
 body {
     padding-bottom: 45px;
 }
+
+.progress-bar {
+    font-size: 1.4em;
+}

@@ -45,7 +45,7 @@ function handleKeyUp(event) {
     if (event.which === 70) {// f
         finishVoting();
         event.preventDefault();
-    } else if (event.which === 82) {// r
+    } else if (event.which === 82 && mode === 'result') {// r
         resetVotes();
         event.preventDefault();
     }
