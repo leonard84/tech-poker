@@ -1,17 +1,19 @@
 package org.oneandone.tech.poker.leo.services
 
 import org.oneandone.tech.poker.leo.data.Choice
-import org.oneandone.tech.poker.leo.data.GameId
 import org.oneandone.tech.poker.leo.data.GameStats
 import org.oneandone.tech.poker.leo.data.Result
+import org.springframework.messaging.simp.SimpMessagingTemplate
 
 import spock.lang.Specification
 import spock.lang.Subject
 
 class GameSessionTest extends Specification {
 
+    SimpMessagingTemplate simpMessagingTemplate = Stub()
+
     @Subject
-    GameSession gameSession = new GameSession(new GameId())
+    GameSession gameSession = new GameSession(simpMessagingTemplate: simpMessagingTemplate)
 
     def "a player can join"() {
         when:
@@ -37,9 +39,11 @@ class GameSessionTest extends Specification {
         Result result = gameSession.tally()
 
         then:
-        result.average == 0.0d
-        result.max == 0
-        result.min == 0
+        verifyAll(result) {
+            average == 0.0d
+            max == Integer.MIN_VALUE
+            min == Integer.MAX_VALUE
+        }
     }
 
     def "result is calculated on demand with votes"() {
@@ -68,7 +72,7 @@ class GameSessionTest extends Specification {
         result.votes.players == [[], [], [], [], [], ['player1', 'player2'], [], [], [], ['player3'], []]
 
         and:
-        result.votes.count == [0,0,0,0,0,2,0,0,0,1,0]
+        result.votes.count == [0, 0, 0, 0, 0, 2, 0, 0, 0, 1, 0]
     }
 
     def "game stats can be queried for no players"() {

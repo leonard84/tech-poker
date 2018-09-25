@@ -1,9 +1,9 @@
 import org.openqa.selenium.chrome.ChromeDriver
 import org.openqa.selenium.chrome.ChromeDriverService
-import org.openqa.selenium.os.CommandLine
+import org.openqa.selenium.os.ExecutableFinder
 
 File findDriverExecutable() {
-    def defaultExecutable = CommandLine.find("chromedriver")
+    def defaultExecutable = new ExecutableFinder().find("chromedriver")
     if (defaultExecutable) {
         new File(defaultExecutable)
     } else {
