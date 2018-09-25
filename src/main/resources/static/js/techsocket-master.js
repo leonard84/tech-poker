@@ -30,6 +30,7 @@ function connect() {
         updateStats();
     });
 }
+
 function init() {
     var gameSource = $("#game-template").html();
     gameTemplate = Handlebars.compile(gameSource);
@@ -37,6 +38,17 @@ function init() {
     resultTemplate = Handlebars.compile(resultSource);
     sessionId = $('body').data('game-id');
     connect();
+    $(document).on('keyup', handleKeyUp);
+}
+
+function handleKeyUp(event) {
+    if (event.which === 70) {// f
+        finishVoting();
+        event.preventDefault();
+    } else if (event.which === 82) {// r
+        resetVotes();
+        event.preventDefault();
+    }
 }
 
 function updateGame(data) {
@@ -45,6 +57,16 @@ function updateGame(data) {
         data.votePercent = data.currentVotes * 100 / data.totalVotes;
         var html = gameTemplate(data);
         $('#content').html(html);
+        if (data.votePercent > 99) {
+            $('#progress-bar').addClass('progress-bar-success');
+        } else if (data.votePercent > 74) {
+            // default darker blue looks better
+            //$('#progress-bar').addClass('progress-bar-info');
+        } else if (data.votePercent > 49) {
+            $('#progress-bar').addClass('progress-bar-warning');
+        } else {
+            $('#progress-bar').addClass('progress-bar-danger');
+        }
         $('#finish').click(finishVoting);
         $('.kick-player').click(kickPlayer);
         $('#copyToClipboard').click(copyToClipboard);
@@ -97,7 +119,7 @@ function updateStats() {
 function resetVotes() {
     mode = "voting";
     stompClient.send("/app/session/reset", {}, JSON.stringify({sessionId: sessionId}));
-    updateStats();
+    setTimeout(updateStats, 100);
 }
 
 
