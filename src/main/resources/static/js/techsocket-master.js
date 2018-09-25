@@ -49,6 +49,8 @@ function updateGame(data) {
         $('.kick-player').click(kickPlayer);
         $('#copyToClipboard').click(copyToClipboard);
         renderQr();
+    } else if (mode === 'result') {
+        $('#refresh').removeClass('btn-default').addClass('btn-success');
     }
 }
 
@@ -60,6 +62,7 @@ function showResult(data) {
         var html = resultTemplate(data);
         $('#content').html(html);
         $('#reset').click(resetVotes);
+        $('#refresh').click(finishVoting);
         new Morris.Bar({
             // ID of the element in which to draw the chart.
             element: 'histogram',
