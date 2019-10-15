@@ -18,18 +18,19 @@
 </head>
 <body>
 <div class="container" id="container">
-    <div class="col-xs-12">
+    <div class="col-sm-12">
         <h1>Tech Poker <img src="img/logo-48.png" data-th-src="@{/img/logo-48.png}"></h1>
-
     </div>
-    <div class="col-xs-6">
+    <div class="col-sm-6">
         <div class="form-group">
             <label for="sessionId">Session Id</label>
-            <input type="text" id="sessionId" name="sessionId" class="form-control" placeholder="Session" minlength="20" required="true"/>
+            <input type="text" id="sessionId" name="sessionId" class="form-control" placeholder="Session" minlength="20"
+                   required="true"/>
         </div>
         <div class="form-group">
             <label for="playerName">Player Name</label>
-            <input type="text" id="playerName" name="playerName" class="form-control" placeholder="Nickname" minlength="3" required="true"/>
+            <input type="text" id="playerName" name="playerName" class="form-control" placeholder="Nickname" minlength="3"
+                   required="true"/>
         </div>
 
         <div class="form-group">
@@ -38,23 +39,28 @@
     </div>
 </div>
 <script id="vote-template" type="text/x-handlebars-template">
-    <div class="col-xs-12">
-        <h1 class="hidden-xs">Tech Poker <img src="img/logo-48.png" data-th-src="@{/img/logo-48.png}">
-            <span class="pull-right">Hello {{playerName}} </span>
-        </h1>
+    <div class="row">
+        <div class="col-12">
+            <h1 class="hidden-xs">Tech Poker <img src="img/logo-48.png" data-th-src="@{/img/logo-48.png}">
+                <span class="pull-right d-block d-md-inline">Hello {{playerName}} </span>
+            </h1>
+        </div>
     </div>
-    <div class="blue-cards">
+    <div class="blue-cards row">
         {{#each cards}}
-        <div class="col-xs-4">
+        <div class="col-4 mb-3">
             <div class="card" data-card="{{key}}">
                 <h1 class="card-content">{{displayName}}</h1>
             </div>
         </div>
         {{/each}}
     </div>
-    <div class="col-xs-12">
-        <a href="vote/{{sessionId}}/{{playerId}}" class="btn btn-default">Switch to Plain Variant</a>
-        <a href="#{{sessionId}},{{playerId}}" id="reconnect" class="btn btn-default">Reconnect Websocket</a>
+
+    <div class="row">
+        <div class="col-12">
+            <a href="vote/{{sessionId}}/{{playerId}}" class="btn btn-secondary">Switch to Plain Variant</a>
+            <a href="#{{sessionId}},{{playerId}}" id="reconnect" class="btn btn-secondary">Reconnect Websocket</a>
+        </div>
     </div>
 </script>
 </body>

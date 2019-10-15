@@ -12,81 +12,87 @@
 </head>
 <body>
 <div class="container">
-    <div class="col-xs-12">
-        <img src="img/logo-256.png" data-th-src="@{/img/logo-256.png}" class="pull-right visible-md visible-lg">
-        <h1>Tech Poker <img src="img/logo-48.png" data-th-src="@{/img/logo-48.png}" class="hidden-md hidden-lg"></h1>
-        </h1>
-    </div>
-
-    <div class="col-md-6 col-xs-12">
-        <h2>Start a new Planning Session</h2>
-        <div class="col-md-3 col-xs-3">
-            <form data-th-action="@{/new}" method="post" class="form-inline">
-                <button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-list-alt"></span> Plain HTML
-                </button>
-            </form>
+    <div class="row">
+        <div class="col">
+            <img src="img/logo-256.png" data-th-src="@{/img/logo-256.png}" class="float-right d-none d-md-inline">
+            <h1>Tech Poker <img src="img/logo-48.png" data-th-src="@{/img/logo-48.png}" class="d-sm-inline d-md-none"></h1>
+            </h1>
         </div>
-        <div class="col-md-3 col-xs-3">
-            <form data-th-action="@{/new/ws}" method="post" class="form-inline">
-                <button type="submit" class="btn btn-success"><span class="glyphicon glyphicon-cloud"></span> Websockets</button>
-            </form>
+    </div>
+    <div class="row mb-5">
+        <div class="col-md-6 col-sm-12">
+            <h2>Start a new Planning Session</h2>
+            <div>
+                <form data-th-action="@{/new}" method="post" class="d-inline">
+                    <button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-list-alt"></span> Plain
+                        HTML
+                    </button>
+                </form>
+                <form data-th-action="@{/new/ws}" method="post" class="d-inline">
+                    <button type="submit" class="btn btn-success"><span class="glyphicon glyphicon-cloud"></span> Websockets
+                    </button>
+                </form>
+            </div>
         </div>
 
-    </div>
+        <div class="col-md-6 col-sm-12">
+            <h2>Join a Session</h2>
 
-    <div class="col-md-6 col-xs-12">
-        <h2>Join a Session</h2>
-
-        <form data-th-action="@{/join}" method="get" class="form-inline">
-            <div class="input-group">
-                <input type="text" name="gameId" class="form-control" placeholder="Session Id" minlength="36" required="true"/>
-                <span class="input-group-btn">
+            <form data-th-action="@{/join}" method="get" class="d-inline">
+                <div class="input-group">
+                    <input type="text" name="gameId" class="form-control" placeholder="Session Id" minlength="36"
+                           required="true"/>
+                    <span class="input-group-btn">
                     <button type="submit" class="btn btn-success"><span class="glyphicon glyphicon-log-in"></span> Join</button>
                 </span>
-            </div>
-        </form>
+                </div>
+            </form>
+        </div>
     </div>
 
-    <div class="col-xs-12" style="height:50px;"></div>
-
-    <div class="jumbotron col-xs-12">
-        <h2>What is this?</h2>
-        <p>
-            Tech Poker is a webapp to collaboratively use the
-            <a href="https://en.wikipedia.org/wiki/Planning_poker" target="_blank">planning poker</a> methodology.
-        </p>
-        <p>
-           Currently there are <span data-th-text=" ${sessionCount} " class="badge"></span> active planning sessions.
-        </p>
-        <h2>Prerequisites</h2>
-        <ul>
-            <li>Each participant needs an internet device, preferably a smartphone.</li>
-            <li>(Optional) a QR-Code scanner is useful to to easily join a planning session.</li>
-        </ul>
-        <h2>FAQ</h2>
-        <dl>
-            <dt>Performance</dt>
-            <dd>This app runs on a free Heroku account, so resources are limited.
-                However, as the backend is lightweight it should handle a good deal of concurrent sessions.
-            </dd>
-            <dt>Persistence</dt>
-            <dd>Sessions are only stored in-memory and are lost if the app shuts down, or a sessions is removed due to inactivity.
-                There is no vote history, if a vote is reset then all individual votes are deleted.
-            </dd>
-            <dt>Security</dt>
-            <dd>SSL is provided by Heroku</dd>
-            <dt>Privacy</dt>
-            <dd>Everyone who knows the SessionId, can join the session and see the data.
-                However, the SessionId is a randomly generated UUID so the chance of guessing it or using bruteforce are
-                <a href="https://en.wikipedia.org/wiki/Universally_unique_identifier#Collisions" target="_blank"> really small</a>.
-                Furthermore, the only data that is on the server are the nicknames and the current votes.
-            </dd>
-            <dt>Plain vs. Websocket</dt>
-            <dd>The plain variant works without JavaScript (core functionality) and is generally recommended for old devices or
-                if the internet connection is flaky.
-                Websockets provide a smoother and faster experience, but require JavaScript and a stable connection.
-            </dd>
-        </dl>
+    <div class="row">
+        <div class="jumbotron col-sm-12">
+            <h2>What is this?</h2>
+            <p>
+                Tech Poker is a webapp to collaboratively use the
+                <a href="https://en.wikipedia.org/wiki/Planning_poker" target="_blank">planning poker</a> methodology.
+            </p>
+            <p>
+                Currently there are <span data-th-text=" ${sessionCount} " class="badge"></span> active planning sessions.
+            </p>
+            <h2>Prerequisites</h2>
+            <ul>
+                <li>Each participant needs an internet device, preferably a smartphone.</li>
+                <li>(Optional) a QR-Code scanner is useful to to easily join a planning session.</li>
+            </ul>
+            <h2>FAQ</h2>
+            <dl>
+                <dt>Performance</dt>
+                <dd>This app runs on a free Heroku account, so resources are limited.
+                    However, as the backend is lightweight it should handle a good deal of concurrent sessions.
+                </dd>
+                <dt>Persistence</dt>
+                <dd>Sessions are only stored in-memory and are lost if the app shuts down, or a sessions is removed due to
+                    inactivity.
+                    There is no vote history, if a vote is reset then all individual votes are deleted.
+                </dd>
+                <dt>Security</dt>
+                <dd>SSL is provided by Heroku</dd>
+                <dt>Privacy</dt>
+                <dd>Everyone who knows the SessionId, can join the session and see the data.
+                    However, the SessionId is a randomly generated UUID so the chance of guessing it or using bruteforce are
+                    <a href="https://en.wikipedia.org/wiki/Universally_unique_identifier#Collisions" target="_blank"> really
+                        small</a>.
+                    Furthermore, the only data that is on the server are the nicknames and the current votes.
+                </dd>
+                <dt>Plain vs. Websocket</dt>
+                <dd>The plain variant works without JavaScript (core functionality) and is generally recommended for old devices
+                    or
+                    if the internet connection is flaky.
+                    Websockets provide a smoother and faster experience, but require JavaScript and a stable connection.
+                </dd>
+            </dl>
+        </div>
     </div>
 </div>
 </body>
