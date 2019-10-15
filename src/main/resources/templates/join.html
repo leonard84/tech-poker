@@ -17,20 +17,20 @@
     <div class="col-xs-12">
         <h1>Tech Poker <img src="img/logo-48.png" data-th-src="@{/img/logo-48.png}"></h1>
     </div>
-    <div class="col-md-6 col-xs-12">
-        <form id="joinform" data-th-action="@{/join/__${gameId}__}" method="post">
-            <div class="input-group">
-                <input type="text" name="playerName" id="playerName" class="form-control" placeholder="Nickname" minlength="3"
-                       required="true"/>
-                <span class="input-group-btn">
-                    <button class="btn btn-success" type="submit"><span
-                            class="glyphicon glyphicon-list-alt"></span> Join Plain</button>
-                    <button class="btn btn-primary" id="joinws" type="button" data-th-attr="data-session-id='__${gameId}__'">
-                        <span class="glyphicon glyphicon-cloud"></span> Join Websockets</button>
-                </span>
-            </div>
-        </form>
-    </div>
+    <form id="joinform" data-th-action="@{/join/__${gameId}__}" method="post">
+        <div class="col-md-6 col-xs-12" style="margin-bottom: 5px">
+            <input type="text" name="playerName" id="playerName" class="form-control" placeholder="Nickname" minlength="3"
+                   required="true"/>
+        </div>
+        <div class="col-md-6 col-xs-12">
+            <button class="btn btn-success" type="submit"><span
+                    class="glyphicon glyphicon-list-alt"></span> Join Plain
+            </button>
+            <button class="btn btn-primary" id="joinws" type="button" data-th-attr="data-session-id='__${gameId}__'">
+                <span class="glyphicon glyphicon-cloud"></span> Join Websockets
+            </button>
+        </div>
+    </form>
 </div>
 </body>
 </html>

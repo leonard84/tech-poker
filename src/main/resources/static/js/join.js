@@ -1,8 +1,8 @@
 $(function () {
     $('#joinws').click(function () {
         var joinform = $("#joinform");
-        if(joinform[0].checkValidity()) {
-            playerName = $('#playerName').val();
+        if (joinform[0].checkValidity()) {
+            var playerName = $('#playerName').val();
             $.ajax({
                 url: '/rest/join',
                 type: 'POST',
@@ -11,6 +11,7 @@ $(function () {
                 dataType: 'json'
             }).done(function (data) {
                 console.log(data);
+                localStorage.setItem("playerName", playerName);
                 window.location = "wp#" + data.sessionId + "," + data.playerId;
             }).fail(function (err) {
                 console.log(err);
@@ -21,4 +22,11 @@ $(function () {
             joinform.find("input[type='submit']").click()
         }
     });
+});
+
+$(document).ready(function () {
+    var name = localStorage.getItem("playerName");
+    if (name) {
+        $('#playerName').val(name);
+    }
 });
