@@ -76,8 +76,8 @@ function fetchStats(session, player) {
         console.log(data);
         playerName = data.playerName;
         setTimeout(function () {
-            $('.card').removeClass('selected');
-            $('.card[data-card="' + data.vote + '"]').addClass('selected');
+            $('.poker-card').removeClass('selected');
+            $('.poker-card[data-card="' + data.vote + '"]').addClass('selected');
         }, 500);
     }).fail(function (err) {
         console.log(err);
@@ -87,18 +87,22 @@ function fetchStats(session, player) {
 function render() {
     var context = {cards: cards, playerName: playerName, sessionId: sessionId, playerId: playerId};
     $('#container').html(voteTemplate(context));
-    $('.card').click(
+    $('.poker-card').click(
         function () {
             var cardValue = $(this).data('card');
-            console.log("Selected Card Value: " + cardValue);
-            $('.card').removeClass('selected');
-            $(this).addClass('selected');
-            vote(cardValue);
+            if (cardValue) { // qr-code also has the .poker-card class, so check if it has a valid vote value
+                console.log("Selected Card Value: " + cardValue);
+                $('.poker-card').removeClass('selected');
+                $(this).addClass('selected');
+                vote(cardValue);
+            }
         }
     );
     $('#reconnect').click(function () {
         window.location.reload(true);
     });
+
+    renderQr();
 }
 
 function vote(value) {
@@ -107,7 +111,7 @@ function vote(value) {
 }
 
 function reset() {
-    $('.card').removeClass('selected');
+    $('.poker-card').removeClass('selected');
 }
 
 $(function () {

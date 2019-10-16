@@ -140,6 +140,7 @@ public class PokerController {
         modelAndView.addObject("cards", CARDS);
         modelAndView.addObject("playerName", playerName);
         modelAndView.addObject("vote", Optional.ofNullable(vote).map(Enum::name).orElse(""));
+        modelAndView.addObject("externalUrl", pokerProperties.getExternalUrl());
         modelAndView.setViewName("vote");
         return modelAndView;
     }
