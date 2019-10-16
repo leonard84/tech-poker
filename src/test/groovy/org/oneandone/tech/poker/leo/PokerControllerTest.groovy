@@ -7,7 +7,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrlPattern
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view
 
-import javax.inject.Inject
+import org.springframework.beans.factory.annotation.Autowired
 
 import org.oneandone.tech.poker.leo.config.PokerProperties
 import org.oneandone.tech.poker.leo.services.GameService
@@ -21,13 +21,13 @@ import spock.lang.Specification
 @SpringBootTest
 class PokerControllerTest extends Specification {
 
-    @Inject
+    @Autowired
     MockMvc mockMvc
 
-    @Inject
+    @Autowired
     GameService gameService
 
-    @Inject
+    @Autowired
     PokerProperties pokerProperties
 
     def "renders index"() {

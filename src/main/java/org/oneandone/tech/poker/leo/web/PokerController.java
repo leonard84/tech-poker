@@ -7,7 +7,6 @@ import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 import javax.validation.constraints.Size;
-import javax.ws.rs.FormParam;
 
 import org.oneandone.tech.poker.leo.config.PokerProperties;
 import org.oneandone.tech.poker.leo.data.Choice;
@@ -104,7 +103,7 @@ public class PokerController {
     }
 
     @PostMapping(path = "/join/{gameId}")
-    public View joinGame(@PathVariable("gameId") String gameId, @FormParam("playerName") @Size(min = 3) String playerName) {
+    public View joinGame(@PathVariable("gameId") String gameId, @RequestParam("playerName") @Size(min = 3) String playerName) {
         GameSession game = getGame(gameId);
         PlayerId playerId = game.join(playerName);
         return new RedirectView("/vote/" + gameId + "/" + playerId);
@@ -112,7 +111,7 @@ public class PokerController {
 
 
     @PostMapping(path = "/kick/{gameId}")
-    public View kickPlayer(@PathVariable("gameId") String gameId, @FormParam("playerId") @Size(min = 36) String playerId) {
+    public View kickPlayer(@PathVariable("gameId") String gameId, @RequestParam("playerId") @Size(min = 36) String playerId) {
         GameSession game = getGame(gameId);
         PlayerId pId = new PlayerId(playerId);
         game.kickPlayer(pId);
@@ -121,7 +120,7 @@ public class PokerController {
 
     @PostMapping(path = "/vote/{gameId}/{playerId}")
     public View vote(@PathVariable("gameId") String gameId, @PathVariable("playerId") String playerId,
-            @FormParam("vote") String vote) {
+            @RequestParam("vote") String vote) {
         GameSession game = getGame(gameId);
         PlayerId playerId1 = new PlayerId(playerId);
         game.vote(playerId1, Choice.valueOf(vote.toUpperCase()));
@@ -130,7 +129,7 @@ public class PokerController {
 
     @PostMapping(path = "/request-reset/{gameId}/{playerId}")
     public View requestReset(@PathVariable("gameId") String gameId, @PathVariable("playerId") String playerId,
-            @FormParam("vote") String vote) {
+            @RequestParam("vote") String vote) {
         GameSession game = getGame(gameId);
         game.requestReset();
         return new RedirectView("/vote/" + gameId + "/" + playerId);
