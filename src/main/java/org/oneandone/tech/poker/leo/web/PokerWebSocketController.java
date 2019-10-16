@@ -18,6 +18,7 @@ import org.oneandone.tech.poker.leo.messages.JoinRequest;
 import org.oneandone.tech.poker.leo.messages.JoinResponse;
 import org.oneandone.tech.poker.leo.messages.KickMessage;
 import org.oneandone.tech.poker.leo.messages.PlayerStats;
+import org.oneandone.tech.poker.leo.messages.ResetRequest;
 import org.oneandone.tech.poker.leo.messages.SessionMessage;
 import org.oneandone.tech.poker.leo.messages.VoteMessage;
 import org.oneandone.tech.poker.leo.services.GameService;
@@ -26,10 +27,10 @@ import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
@@ -42,8 +43,7 @@ public class PokerWebSocketController {
     private MessageSource messageSource;
 
 
-    @RequestMapping(path = "/rest/join", method = RequestMethod.POST, produces = "application/json", consumes =
-            "application/json")
+    @PostMapping(path = "/rest/join", produces = "application/json", consumes = "application/json")
     @ResponseBody
     public JoinResponse join(@RequestBody JoinRequest joinRequest) {
         GameSession gameSession = gameService.searchById(new GameId(joinRequest.getSessionId()))
@@ -53,7 +53,7 @@ public class PokerWebSocketController {
                 gameSession.join(joinRequest.getPlayerName()).toString());
     }
 
-    @RequestMapping(path = "/rest/cards", method = RequestMethod.GET, produces = "application/json")
+    @GetMapping(path = "/rest/cards", produces = "application/json")
     @ResponseBody
     public Cards cards() {
         Locale locale = LocaleContextHolder.getLocaleContext().getLocale();
@@ -65,7 +65,7 @@ public class PokerWebSocketController {
         return new Cards(cards);
     }
 
-    @RequestMapping(path = "/rest/stats/{sessionId}/{playerId}", method = RequestMethod.GET, produces = "application/json")
+    @GetMapping(path = "/rest/stats/{sessionId}/{playerId}", produces = "application/json")
     @ResponseBody
     public PlayerStats playerStats(@PathVariable("sessionId") String sessionId, @PathVariable("playerId") String playerId) {
         GameSession gameSession = gameService.searchById(new GameId(sessionId)).orElseThrow(GameNotFoundException::new);
@@ -86,6 +86,12 @@ public class PokerWebSocketController {
     public void gameReset(SessionMessage session) {
         Optional<GameSession> gameSession = gameService.searchById(new GameId(session.getSessionId()));
         gameSession.ifPresent(GameSession::reset);
+    }
+
+    @MessageMapping("/session/request-reset")
+    public void gameRequestReset(ResetRequest resetRequest) {
+        Optional<GameSession> gameSession = gameService.searchById(new GameId(resetRequest.getSessionId()));
+        gameSession.ifPresent(GameSession::requestReset);
     }
 
     @MessageMapping("/session/tally")

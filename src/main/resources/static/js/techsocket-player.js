@@ -5,6 +5,7 @@ var playerName = "";
 var sessionId = "";
 var playerId = "";
 var errorCounter = 0;
+var resetRequested = false;
 
 function playerJoined(session, player) {
     sessionId = session;
@@ -99,7 +100,10 @@ function render() {
         }
     );
     $('#reconnect').click(function () {
-        window.location.reload(true);
+        window.location.reload();
+    });
+    $('#requestReset').click(function () {
+        requestReset();
     });
 
     renderQr();
@@ -110,7 +114,13 @@ function vote(value) {
     stompClient.send('/app/session/vote', {}, JSON.stringify({sessionId: sessionId, playerId: playerId, vote: value}));
 }
 
+function requestReset() {
+    console.log("Request Reset ");
+    stompClient.send('/app/session/request-reset', {}, JSON.stringify({sessionId: sessionId, playerId: playerId}));
+}
+
 function reset() {
+    resetRequested = false;
     $('.poker-card').removeClass('selected');
 }
 

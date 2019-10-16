@@ -43,14 +43,20 @@
                 </div>
             </div>
         </div>
-        <div class="row">
-            <div class="col-12">
-                <a href="websocket-player.html" data-th-href="@{/wp#__${gameId}__,__${playerId}__}" id="reconnect"
-                   class="btn btn-secondary">
-                    <span class="glyphicon glyphicon-cloud"></span> Switch to Websocket</a>
-            </div>
-        </div>
     </form>
+
+    <div class="row">
+        <div class="col-12">
+            <a href="websocket-player.html" data-th-href="@{/wp#__${gameId}__,__${playerId}__}" id="reconnect"
+               class="btn btn-secondary">
+                <span class="glyphicon glyphicon-cloud"></span> Switch to Websocket</a>
+
+            <form id="requestResetForm" class="d-inline" method="post" action="/request-reset/fake/player"
+                  data-th-action="@{/request-reset/__${gameId}__/__${playerId}__}">
+                <button class="btn btn-secondary" type="submit">Request Reset</button>
+            </form>
+        </div>
+    </div>
 </div>
 </body>
 </html>

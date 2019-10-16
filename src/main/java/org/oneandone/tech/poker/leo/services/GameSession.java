@@ -9,6 +9,7 @@ import java.util.IntSummaryStatistics;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -41,6 +42,8 @@ public class GameSession {
 
     private Map<PlayerId, String> players = new ConcurrentHashMap<>();
 
+    private AtomicBoolean resetRequested = new AtomicBoolean();
+
     public GameSession() {
         this.id = new GameId();
     }
@@ -52,7 +55,7 @@ public class GameSession {
 
     public PlayerId join(String playerName) {
         Assert.notNull(playerName, "playerName may not be null");
-        if (players.values().contains(playerName)) {
+        if (players.containsValue(playerName)) {
             throw new DuplicatedPlayerException();
         }
         updated();
@@ -114,10 +117,17 @@ public class GameSession {
         Collection<PlayerVote> values = players.entrySet().stream()
                 .map(player -> new PlayerVote(player.getKey(), player.getValue(), votes.containsKey(player.getKey())))
                 .collect(Collectors.toList());
-        return new GameStats(values, votes.size());
+        return new GameStats(values, votes.size(), resetRequested.get());
+    }
+
+    public void requestReset() {
+        if (resetRequested.compareAndSet(false, true)) {
+            sendStats();
+        }
     }
 
     public void reset() {
+        resetRequested.set(false);
         updated();
         votes.clear();
         simpMessagingTemplate.convertAndSend("/topic/session/" + id + "/reset", "reset");

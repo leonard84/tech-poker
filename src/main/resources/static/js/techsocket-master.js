@@ -4,6 +4,7 @@ var resultTemplate = null;
 
 var mode = "voting";
 var sessionId = null;
+var resetRequestedNotificationShown = false;
 
 
 function connect() {
@@ -72,6 +73,9 @@ function updateGame(data) {
         $('#copyToClipboard').click(copyToClipboard);
         renderQr();
     } else if (mode === 'result') {
+        if (data.resetRequested) {
+            showResetRequestedNotification();
+        }
         $('#refresh').removeClass('btn-default').addClass('btn-success');
     }
 }
@@ -102,6 +106,47 @@ function showResult(data) {
     }
 }
 
+function showResetRequestedNotification() {
+    if (resetRequestedNotificationShown) {
+        return
+    }
+    resetRequestedNotificationShown = true;
+    // Let's check if the browser supports notifications
+    if (!("Notification" in window)) {
+        console.log("This browser does not support desktop notification");
+        return;
+    }
+    // Let's check whether notification permissions have already been granted
+    else if (Notification.permission === "granted") {
+        // If it's okay let's create a notification
+        showResetRequestedNotificationInternal();
+    }
+
+    // Otherwise, we need to ask the user for permission
+    else if (Notification.permission !== "denied") {
+        Notification.requestPermission().then(function (permission) {
+            // If the user accepts, let's create a notification
+            if (permission === "granted") {
+                showResetRequestedNotificationInternal();
+            }
+        });
+    }
+}
+
+function showResetRequestedNotificationInternal() {
+    var iconUrl = $('#logo').attr('src');
+    var notification = new Notification("Tech Poker: Please Reset the Voting", {
+        body: "Clicking on this notification will reset the Vote",
+        icon: iconUrl,
+        badge: iconUrl
+    });
+    notification.onclick = function (ev) {
+        ev.preventDefault();
+        resetVotes();
+    }
+
+}
+
 function finishVoting() {
     mode = "result";
     stompClient.send("/app/session/tally", {}, JSON.stringify({sessionId: sessionId}));
@@ -120,6 +165,7 @@ function resetVotes() {
     mode = "voting";
     stompClient.send("/app/session/reset", {}, JSON.stringify({sessionId: sessionId}));
     setTimeout(updateStats, 100);
+    resetRequestedNotificationShown = false;
 }
 
 

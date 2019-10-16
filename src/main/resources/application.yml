@@ -14,8 +14,20 @@ poker:
   external-url: http://localhost:8080
 ---
 spring:
+  profiles: local-ssl
+server:
+  ssl:
+    key-store: classpath:dev-only-keystore.p12
+    key-store-password: changeit
+    enabled: true
+  port: 8443
+poker:
+  external-url: https://localhost:8443
+---
+spring:
   profiles: heroku
 poker:
   external-url: https://tech-poker.herokuapp.com
 management:
-  add-application-context-header: false
+  server:
+    add-application-context-header: false
