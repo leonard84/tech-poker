@@ -1,12 +1,16 @@
-function renderQr() {
-    $('#joinQr').each(function (idx, elem) {
+function renderQr(overrideQrUrl) {
+    var joinQr = $('#joinQr');
+    joinQr.each(function (idx, elem) {
+        if (overrideQrUrl) {
+            $(elem).data('qr-url', overrideQrUrl);
+        }
         var options = {text: $(elem).data('qr-url'), correctLevel: QRCode.CorrectLevel.L};
         if ($(elem).data('qr-size')) {
             options.width = options.height = $(elem).data('qr-size');
         }
         new QRCode(elem, options);
     });
-    $('#joinQr').click(function () {
+    joinQr.click(function () {
         $('#overlay').remove();
         $('body').prepend('<div style="position: absolute; z-index: 100; width: 70vmin; height: 70vmin; padding: 10vmin; background-color: white;" id="overlay"><div style="position: absolute;" id="overlay-qr"></div></div>');
         var overlay = $('#overlay');

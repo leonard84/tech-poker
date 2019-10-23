@@ -32,7 +32,7 @@ function connectToServer() {
             setTimeout(connectToServer, delay);
         } else {
             console.log("Giving up reconnecting. Try reloading the page");
-            window.location.reload(true);
+            window.location.reload();
         }
     });
 }
@@ -106,7 +106,7 @@ function render() {
         requestReset();
     });
 
-    renderQr();
+    renderQr(new URL("./join?gameId="+sessionId, window.location.href, true).href);
 }
 
 function vote(value) {
