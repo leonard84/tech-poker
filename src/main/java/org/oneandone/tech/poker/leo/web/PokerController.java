@@ -128,8 +128,7 @@ public class PokerController {
     }
 
     @PostMapping(path = "/request-reset/{gameId}/{playerId}")
-    public View requestReset(@PathVariable("gameId") String gameId, @PathVariable("playerId") String playerId,
-            @RequestParam("vote") String vote) {
+    public View requestReset(@PathVariable("gameId") String gameId, @PathVariable("playerId") String playerId) {
         GameSession game = getGame(gameId);
         game.requestReset();
         return new RedirectView("/vote/" + gameId + "/" + playerId);

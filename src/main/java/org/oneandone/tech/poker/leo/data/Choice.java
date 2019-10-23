@@ -6,7 +6,7 @@ public enum Choice {
     private final boolean hasValue;
     private final int value;
 
-    private Choice() {
+    Choice() {
         hasValue = false;
         value = 0;
     }
