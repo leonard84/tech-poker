@@ -98,6 +98,7 @@ public class PokerController {
     public ModelAndView requestJoinGame(@RequestParam("gameId") String gameId, ModelAndView modelAndView) {
         GameSession game = getGame(gameId);
         modelAndView.addObject("gameId", game.getId());
+        modelAndView.addObject("externalUrl", pokerProperties.getExternalUrl());
         modelAndView.setViewName("join");
         return modelAndView;
     }
