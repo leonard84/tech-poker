@@ -4,6 +4,14 @@
     <meta charset="UTF-8"/>
     <title>Tech Poker</title>
 
+    <meta property="description" content="Tech Poker is a webapp to collaboratively use the planning poker methodology.">
+    <meta property="og:type" content="website">
+    <meta property="og:image" data-th-content="@{/img/logo-256.png}">
+    <meta property="twitter:image" data-th-content="@{/img/logo-256.png}">
+    <meta property="twitter:card" content="summary_large_image">
+
+    <meta property="robot" content="nofollow">
+
     <link rel="stylesheet" href="../static/css/bootstrap.min.css" data-th-href="@{/css/bootstrap.min.css}"
           data-th-if="${currentSitePreference.normal}"/>
     <link rel="stylesheet" href="../static/css/bootstrap.min.css" data-th-href="@{/css/theme/cyborg/bootstrap.min.css}"
@@ -16,7 +24,6 @@
         <div class="col">
             <img src="img/logo-256.png" data-th-src="@{/img/logo-256.png}" class="float-right d-none d-md-inline">
             <h1>Tech Poker <img src="img/logo-48.png" data-th-src="@{/img/logo-48.png}" class="d-sm-inline d-md-none"></h1>
-            </h1>
         </div>
     </div>
     <div class="row mb-5">
@@ -40,8 +47,7 @@
 
             <form data-th-action="@{/join}" method="get" class="d-inline">
                 <div class="input-group">
-                    <input type="text" name="gameId" class="form-control" placeholder="Session Id" minlength="36"
-                           required="true"/>
+                    <input type="text" name="gameId" class="form-control" placeholder="Session Id" minlength="36" required/>
                     <span class="input-group-btn">
                     <button type="submit" class="btn btn-success"><span class="glyphicon glyphicon-log-in"></span> Join</button>
                 </span>
