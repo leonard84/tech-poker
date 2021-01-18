@@ -1,5 +1,9 @@
 package org.oneandone.tech.poker.leo.web;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.EnumMap;
@@ -11,6 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.CacheControl;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,6 +25,7 @@ import org.springframework.web.server.ResponseStatusException;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.EncodeHintType;
 import com.google.zxing.WriterException;
+import com.google.zxing.client.j2se.MatrixToImageWriter;
 import com.google.zxing.common.BitArray;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
@@ -36,19 +42,9 @@ public class QrController {
     }
 
     @GetMapping(value = "/qr/{qrCode}/join.svg", produces = "image/svg+xml")
-    public ResponseEntity<String> getJoinQrCode(@PathVariable("qrCode") String qrCode) {
+    public ResponseEntity<String> getJoinQrCodeSvg(@PathVariable("qrCode") String qrCode) {
         try {
-            // simple parameter validation with UUID parsing
-            UUID uuid = UUID.fromString(qrCode);
-            String joinUrl = pokerProperties.getExternalUrl() + "/join?gameId=" + uuid;
-
-            // Code adapted from https://stackoverflow.com/a/60638350
-            QRCodeWriter qrCodeWriter = new QRCodeWriter();
-            Map<EncodeHintType, Object> hints = new EnumMap<>(EncodeHintType.class);
-            hints.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.L);
-            hints.put(EncodeHintType.CHARACTER_SET, StandardCharsets.UTF_8.name());
-
-            BitMatrix bitMatrix = qrCodeWriter.encode(joinUrl, BarcodeFormat.QR_CODE, 16, 16, hints);
+            BitMatrix bitMatrix = getBitMatrix(qrCode, 16, 16);
 
             StringBuilder sbPath = new StringBuilder();
             int width = bitMatrix.getWidth();
@@ -84,5 +80,41 @@ public class QrController {
             LOG.error("Could not create QR code", e);
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    @GetMapping(value = "/qr/{qrCode}/join.png")
+    public ResponseEntity<byte[]> getJoinQrCodePng(@PathVariable("qrCode") String qrCode) {
+        try {
+            BitMatrix bitMatrix = getBitMatrix(qrCode, 600, 600);
+
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            MatrixToImageWriter.writeToStream(bitMatrix, "png",baos);
+
+            return ResponseEntity.ok()
+                    .contentType(MediaType.IMAGE_PNG)
+                    .cacheControl(CacheControl.maxAge(Duration.ofDays(365)))
+                    .body(baos.toByteArray());
+
+        } catch (IllegalArgumentException uuidError) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        } catch (WriterException | IOException e) {
+            LOG.error("Could not create QR code", e);
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    private BitMatrix getBitMatrix(String qrCode, int width, int height) throws WriterException {
+        // simple parameter validation with UUID parsing
+        UUID uuid = UUID.fromString(qrCode);
+        String joinUrl = pokerProperties.getExternalUrl() + "/join?gameId=" + uuid;
+
+        // Code adapted from https://stackoverflow.com/a/60638350
+        QRCodeWriter qrCodeWriter = new QRCodeWriter();
+        Map<EncodeHintType, Object> hints = new EnumMap<>(EncodeHintType.class);
+        hints.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.L);
+        hints.put(EncodeHintType.CHARACTER_SET, StandardCharsets.UTF_8.name());
+
+        BitMatrix bitMatrix = qrCodeWriter.encode(joinUrl, BarcodeFormat.QR_CODE, width, height, hints);
+        return bitMatrix;
     }
 }
