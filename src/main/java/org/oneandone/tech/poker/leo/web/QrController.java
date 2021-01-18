@@ -85,7 +85,7 @@ public class QrController {
     @GetMapping(value = "/qr/{qrCode}/join.png")
     public ResponseEntity<byte[]> getJoinQrCodePng(@PathVariable("qrCode") String qrCode) {
         try {
-            BitMatrix bitMatrix = getBitMatrix(qrCode, 600, 600);
+            BitMatrix bitMatrix = getBitMatrix(qrCode, 100, 100);
 
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             MatrixToImageWriter.writeToStream(bitMatrix, "png",baos);
