@@ -23,6 +23,8 @@ spring:
   config:
     activate:
       on-profile: default
+  thymeleaf:
+    cache: false
 server:
   port: 8080
 poker:

@@ -56,6 +56,7 @@ function updateGame(data) {
     if (mode === 'voting') {
         data.totalVotes = data.playerVotes.length;
         data.votePercent = data.currentVotes * 100 / data.totalVotes;
+        document.title = "Tech Poker (" + data.currentVotes + "/" + data.totalVotes + ")";
         var html = gameTemplate(data);
         $('#content').html(html);
         if (data.votePercent > 99) {
@@ -73,6 +74,7 @@ function updateGame(data) {
         $('#copyToClipboard').click(copyToClipboard);
         renderQr();
     } else if (mode === 'result') {
+        document.title = "Tech Poker";
         if (data.resetRequested) {
             showResetRequestedNotification();
         }
