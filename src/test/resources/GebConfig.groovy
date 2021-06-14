@@ -1,9 +1,9 @@
-import org.openqa.selenium.chrome.ChromeDriver
-import org.openqa.selenium.chrome.ChromeDriverService
+import org.openqa.selenium.firefox.FirefoxDriver
+import org.openqa.selenium.firefox.FirefoxOptions
 import org.openqa.selenium.os.ExecutableFinder
 
 File findDriverExecutable() {
-    def defaultExecutable = new ExecutableFinder().find("chromedriver")
+    def defaultExecutable = new ExecutableFinder().find("geckodriver")
     if (defaultExecutable) {
         new File(defaultExecutable)
     } else {
@@ -12,10 +12,10 @@ File findDriverExecutable() {
 }
 
 driver = {
-    ChromeDriverService.Builder serviceBuilder = new ChromeDriverService.Builder()
-            .usingAnyFreePort()
-            .usingDriverExecutable(findDriverExecutable())
-    new ChromeDriver(serviceBuilder.build())
+    FirefoxOptions firefoxOptions = new FirefoxOptions()
+    System.setProperty('webdriver.gecko.driver', findDriverExecutable().absolutePath)
+    FirefoxDriver webDriver = new FirefoxDriver(firefoxOptions)
+    webDriver
 }
 
 baseUrl = "http://localhost"
