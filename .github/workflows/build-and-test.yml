@@ -1,0 +1,23 @@
+name: Build and Test
+
+on:
+  push:
+    branches-ignore:
+      - master
+      - gh-pages
+  pull_request:
+    branches:
+      - '*'
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: 'Set up JDK'
+        uses: actions/setup-java@v1
+        with:
+          java-version: 8
+      - name: test
+        run: |
+          ./mvnw test
+      # no verify for now, as I need to figure out how to run browser tests on github
