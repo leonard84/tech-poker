@@ -13,11 +13,19 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - name: Cache Maven wrapper and dependencies
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/.m2/repository
+          key: test-${{ runner.os }}-mvn-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            test-${{ runner.os }}-
       - name: 'Set up JDK'
         uses: actions/setup-java@v1
         with:
           java-version: 8
       - name: test
         run: |
-          ./mvnw test
+          ./mvnw -B -V test
       # no verify for now, as I need to figure out how to run browser tests on github
