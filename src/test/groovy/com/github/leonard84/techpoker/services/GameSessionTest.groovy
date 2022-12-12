@@ -1,9 +1,10 @@
 package com.github.leonard84.techpoker.services
 
+import org.springframework.messaging.simp.SimpMessagingTemplate
+
 import com.github.leonard84.techpoker.data.Choice
 import com.github.leonard84.techpoker.data.GameStats
 import com.github.leonard84.techpoker.data.Result
-import org.springframework.messaging.simp.SimpMessagingTemplate
 
 import spock.lang.Specification
 import spock.lang.Subject

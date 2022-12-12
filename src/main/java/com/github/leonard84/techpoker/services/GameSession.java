@@ -13,7 +13,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import javax.inject.Inject;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.util.Assert;
 
 import com.github.leonard84.techpoker.data.Choice;
 import com.github.leonard84.techpoker.data.ChoiceResult;
@@ -24,8 +25,8 @@ import com.github.leonard84.techpoker.data.PlayerId;
 import com.github.leonard84.techpoker.data.PlayerVote;
 import com.github.leonard84.techpoker.data.Result;
 import com.github.leonard84.techpoker.exceptions.DuplicatedPlayerException;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
-import org.springframework.util.Assert;
+
+import jakarta.inject.Inject;
 
 public class GameSession {
 
@@ -97,8 +98,8 @@ public class GameSession {
                                 .filter(e -> e.getValue() == choice)
                                 .map(e -> players.get(e.getKey()))
                                 .sorted()
-                                .collect(Collectors.toList())))
-                .collect(Collectors.toList());
+                                .toList()))
+                .toList();
 
         MedianIntConsumer medianIntConsumer = new MedianIntConsumer();
         IntSummaryStatistics statistics = resultStream().peek(medianIntConsumer).summaryStatistics();
@@ -116,7 +117,7 @@ public class GameSession {
     public GameStats getStats() {
         Collection<PlayerVote> values = players.entrySet().stream()
                 .map(player -> new PlayerVote(player.getKey(), player.getValue(), votes.containsKey(player.getKey())))
-                .collect(Collectors.toList());
+                .toList();
         return new GameStats(values, votes.size(), resetRequested.get());
     }
 

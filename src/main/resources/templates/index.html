@@ -9,26 +9,27 @@
     <meta property="og:image" data-th-content="@{/img/logo-256.png}">
     <meta property="twitter:image" data-th-content="@{/img/logo-256.png}">
     <meta property="twitter:card" content="summary_large_image">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <meta property="robot" content="nofollow">
 
-    <link rel="stylesheet" href="../static/css/bootstrap.min.css" data-th-href="@{/css/bootstrap.min.css}"
-          data-th-if="${currentSitePreference.normal}"/>
-    <link rel="stylesheet" href="../static/css/bootstrap.min.css" data-th-href="@{/css/theme/cyborg/bootstrap.min.css}"
-          data-th-if="${currentSitePreference.mobile || currentSitePreference.tablet}"/>
+    <link rel="stylesheet" href="../static/css/theme/darkly/bootstrap.min.css"
+          data-th-href="@{/css/theme/darkly/bootstrap.min.css}"/>
     <link rel="stylesheet" href="../static/css/techpoker.css" data-th-href="@{/css/techpoker.css}"/>
 </head>
 <body>
 <div class="container">
     <div class="row">
         <div class="col">
-            <img src="img/logo-256.png" data-th-src="@{/img/logo-256.png}" class="float-right d-none d-md-inline">
-            <h1>Tech Poker <img src="img/logo-48.png" data-th-src="@{/img/logo-48.png}" class="d-sm-inline d-md-none"></h1>
+            <img src="img/logo-256.png" data-th-src="@{/img/logo-256.png}" class="d-none d-md-inline"
+                 style="float: right; max-height: 200px;">
+            <h1 class="mt-4">Tech Poker <img src="img/logo-48.png" data-th-src="@{/img/logo-48.png}"
+                                             class="d-sm-inline d-md-none"></h1>
         </div>
     </div>
-    <div class="row mb-5">
-        <div class="col-md-6 col-sm-12">
-            <h2>Start a new Planning Session</h2>
+    <div class="row">
+        <div class="col-md-6 col-sm-12 mt-5">
+            <h2>Start a new Session</h2>
             <div>
                 <form data-th-action="@{/new}" method="post" class="d-inline">
                     <button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-list-alt"></span> Plain
@@ -42,7 +43,7 @@
             </div>
         </div>
 
-        <div class="col-md-6 col-sm-12">
+        <div class="col-md-6 col-sm-12 mt-5 mb-5">
             <h2>Join a Session</h2>
 
             <form data-th-action="@{/join}" method="get" class="d-inline">
@@ -56,34 +57,35 @@
         </div>
     </div>
 
-    <div class="row">
-        <div class="jumbotron col-sm-12">
+    <div class="row" style="background-color: #333333;">
+        <div class="jumbotron col-sm-12 p-4">
             <h2>What is this?</h2>
             <p>
                 Tech Poker is a webapp to collaboratively use the
                 <a href="https://en.wikipedia.org/wiki/Planning_poker" target="_blank">planning poker</a> methodology.
             </p>
             <p>
-                Currently there are <span data-th-text=" ${sessionCount} " class="badge badge-secondary"></span> active planning sessions.
+                Currently there are <span data-th-text=" ${sessionCount} " class="badge badge-secondary"
+                                          style="background-color: #222;"></span> active planning sessions.
             </p>
             <h2>Prerequisites</h2>
             <ul>
                 <li>Each participant needs an internet device, preferably a smartphone.</li>
-                <li>(Optional) a QR-Code scanner is useful to to easily join a planning session.</li>
+                <li>(Optional) a QR-Code scanner is useful to easily join a planning session.</li>
             </ul>
             <h2>FAQ</h2>
             <dl>
                 <dt>Performance</dt>
-                <dd>This app runs on a free Heroku account, so resources are limited.
+                <dd>This app runs on a free Render account, so resources are limited.
                     However, as the backend is lightweight it should handle a good deal of concurrent sessions.
                 </dd>
                 <dt>Persistence</dt>
-                <dd>Sessions are only stored in-memory and are lost if the app shuts down, or a sessions is removed due to
+                <dd>Sessions are only stored in-memory and are lost if the app shuts down, or a session is removed due to
                     inactivity.
                     There is no vote history, if a vote is reset then all individual votes are deleted.
                 </dd>
                 <dt>Security</dt>
-                <dd>SSL is provided by Heroku</dd>
+                <dd>SSL is provided by Render</dd>
                 <dt>Privacy</dt>
                 <dd>Everyone who knows the SessionId, can join the session and see the data.
                     However, the SessionId is a randomly generated UUID so the chance of guessing it or using bruteforce are

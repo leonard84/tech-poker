@@ -1,20 +1,20 @@
 .poker-card {
     /* Add shadows to create the "card" effect */
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    box-shadow: 0 4px 8px 0 rgba(255, 255, 255, 0.1);
     transition: 0.3s;
     border-radius: 10px; /* 5px rounded corners */
-    min-height: 16em;
 }
 
 /* On mouse-over, add a deeper shadow */
 .poker-card:hover {
-    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.7);
+    -webkit-box-shadow: 0 0 8px 4px rgba(255, 255, 255, 0.5);
+    box-shadow: 0 0 8px 4px rgba(255, 255, 255, 0.5);
     cursor: pointer;
 }
 
 /* Add some padding inside the card container */
 .poker-card-content {
-    padding: 2px 16px;
+    padding: 1.2em 0em;
     text-align: center;
 }
 
@@ -40,7 +40,6 @@
     .action-bar {
         position: fixed;
         bottom: 0;
-        background-color: white;
     }
 }
 

@@ -4,9 +4,16 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
-import javax.inject.Inject;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.github.leonard84.techpoker.data.Choice;
 import com.github.leonard84.techpoker.data.GameId;
@@ -23,15 +30,8 @@ import com.github.leonard84.techpoker.messages.SessionMessage;
 import com.github.leonard84.techpoker.messages.VoteMessage;
 import com.github.leonard84.techpoker.services.GameService;
 import com.github.leonard84.techpoker.services.GameSession;
-import org.springframework.context.MessageSource;
-import org.springframework.context.i18n.LocaleContextHolder;
-import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
+
+import jakarta.inject.Inject;
 
 @Controller
 public class PokerWebSocketController {
@@ -60,7 +60,7 @@ public class PokerWebSocketController {
         List<Card> cards = Arrays.stream(Choice.values())
                 .map(choice ->
                         new Card(choice.name(), messageSource.getMessage("card.values." + choice.name(), null, locale)))
-                .collect(Collectors.toList());
+                .toList();
 
         return new Cards(cards);
     }

@@ -46,9 +46,9 @@ poker:
 spring:
   config:
     activate:
-      on-profile: heroku
+      on-profile: render
 poker:
-  external-url: https://tech-poker.herokuapp.com
+  external-url: https://techpoker.onrender.com
 management:
   server:
     add-application-context-header: false
