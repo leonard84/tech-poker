@@ -40,7 +40,6 @@
     .action-bar {
         position: fixed;
         bottom: 0;
-        background-color: white;
     }
 }
 
@@ -56,18 +55,4 @@ body {
     margin-left: auto!important;
     margin-right: auto!important;
     vertical-align: middle;
-}
-
-@media (max-width:960px)  {
-    @import "theme/darkly/bootstrap.min.css";
-    body {
-        background-color: #000000;
-    }
-    .poker-card {
-        box-shadow: 0 4px 8px 0 rgba(255, 255, 255, 0.1);
-    }
-    .poker-card:hover {
-        -webkit-box-shadow: 0 0 8px 4px rgba(255, 255, 255, 0.5);
-        box-shadow: 0 0 8px 4px rgba(255, 255, 255, 0.5);
-    }
 }
