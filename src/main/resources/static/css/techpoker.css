@@ -1,8 +1,9 @@
 .poker-card {
     /* Add shadows to create the "card" effect */
-    box-shadow: 0 4px 8px 0 rgba(255, 255, 255, 0.1);
+    box-shadow: 0 4px 8px 0 rgba(255, 255, 255, 0.5);
     transition: 0.3s;
     border-radius: 10px; /* 5px rounded corners */
+    min-height: 16em;
 }
 
 /* On mouse-over, add a deeper shadow */
@@ -55,4 +56,14 @@ body {
     margin-left: auto!important;
     margin-right: auto!important;
     vertical-align: middle;
+}
+
+#joinQr img {
+    border: 5px solid white;
+}
+
+@media (max-width: 960px) {
+    body  {
+        background-color: #000000;
+    }
 }

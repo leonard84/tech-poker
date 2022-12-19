@@ -6,6 +6,6 @@ WORKDIR /app
 # Disable tests on Render
 RUN mvn clean package -DskipTests
 
-FROM eclipse-temurin:17-jdk
+FROM eclipse-temurin:17-jre-alpine
 COPY --from=maven /app/target/*.jar /app/techpoker.jar
 EXPOSE 8080
