@@ -17,6 +17,6 @@ It was developed during a hackathon, has proven its usefulness, and is now activ
 Just create a Account at [Render](https://render.com) and a Docker project there.
 
 After linking this repo to the project, you just need to set the 'Docker Command' in the settings to:<br>
-`java -jar -Dspring.profiles.active=render /app/target/tech-poker-app-0.0.1-SNAPSHOT.jar`
+`java -jar -Dspring.profiles.active=render /app/techpoker.jar`
 
 That should be all to build successful on Render.
