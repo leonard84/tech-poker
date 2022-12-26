@@ -14,9 +14,10 @@ It was developed during a hackathon, has proven its usefulness, and is now activ
 
 ## How to Deploy?
 
-Just create a Account at [Render](https://render.com) and a Docker project there.
+Just create a Account at [Render](https://render.com) and a Docker (Web Service) project there.
 
-After linking this repo to the project, you just need to set the 'Docker Command' in the settings to:<br>
-`java -jar -Dspring.profiles.active=render /app/techpoker.jar`
+After linking this repo to the project, you just need to do two steps to make the app run:<br>
+- Set the 'Docker Command' in the settings to: `java -jar /app/techpoker.jar`.
+- Set the environment variable `SPRING_PROFILES_ACTIVE=render`.
 
 That should be all to build successful on Render.
