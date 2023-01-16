@@ -6,15 +6,16 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
-import javax.inject.Inject;
-import javax.inject.Provider;
-
-import com.github.leonard84.techpoker.config.PokerProperties;
-import com.github.leonard84.techpoker.data.GameId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+
+import com.github.leonard84.techpoker.config.PokerProperties;
+import com.github.leonard84.techpoker.data.GameId;
+
+import jakarta.inject.Inject;
+import jakarta.inject.Provider;
 
 @Service
 public class GameService {

@@ -1,10 +1,8 @@
 package com.github.leonard84.techpoker.services
 
-
-import javax.inject.Provider
-
 import com.github.leonard84.techpoker.config.PokerProperties
 
+import jakarta.inject.Provider
 import spock.lang.Specification
 import spock.lang.Subject
 
@@ -17,7 +15,7 @@ class GameServiceTest extends Specification {
     @Subject
     GameService gameService = new GameService(gameSessionProvider: gameSessionProvider, pokerProperties: pokerProperties)
 
-    def "a new game can be created and subsequently queried"(){
+    def "a new game can be created and subsequently queried"() {
         given:
         gameSessionProvider.get() >> new GameSession()
 
